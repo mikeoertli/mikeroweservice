@@ -16,7 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.lang.invoke.MethodHandles;
 
 /**
- * TODO
+ * Primary backend API for the client to use for this demo/sample project.
  *
  * @since 0.0.1
  */

@@ -15,14 +15,14 @@ in a microservice architecture.
 ## 🚨 Setting Expectations 🚨
 
 1. 🤓 This repo and its contents exist solely for the purpose of 🔬🧠 learning/playing with a few technologies and concepts (in no particular order): 
-   1. [microservices](https://microservices.io)
-   2. [Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/)
-   3. [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)
-   4. [SQL](https://en.wikipedia.org/wiki/SQL) 
-   5. [NoSQL](https://en.wikipedia.org/wiki/NoSQL)
-   6. [GraphQL](https://www.graphql-java.com)
-   7. [Elasticsearch](https://www.elastic.co)
-   8. [Kafka (Streams)](https://kafka.apache.org/documentation/streams/)
+   1. [Microservice Architecture](https://microservices.io) (see: [Architecture](#-architecture))
+   2. [Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) (throughout)
+   3. [REST APIs](https://en.wikipedia.org/wiki/Representational_state_transfer) (see: [Client API](#-client-api-))
+   4. [SQL](https://en.wikipedia.org/wiki/SQL) with Spring Boot JPA (details TBD, maybe Postgres?) 
+   5. [NoSQL](https://en.wikipedia.org/wiki/NoSQL) (in this case, [MongoDB](https://www.mongodb.com))
+   6. [GraphQL](https://www.graphql-java.com) (see: [GraphQL Adapter](#-graphql-adapter))
+   7. [Elasticsearch](https://www.elastic.co) (see: [Transcript Service](#-transcript-service))
+   8. [Kafka (Streams)](https://kafka.apache.org/documentation/streams/) (see: [Sentiment Analysis Stream Processor](#-sentiment-analysis-stream-processor))
    9. [a monorepo](https://en.wikipedia.org/wiki/Monorepo)
    10. [gradle multimodule builds](https://reflectoring.io/spring-boot-gradle-multi-module/), and more.
 2. 🚧 This is ***nowhere near complete*** – not even in the "do an end-to-end 'hello world' test" sense.
@@ -89,8 +89,15 @@ The exact endpoints are TBD for now, but some ideas include:
 * Retrieve the last tweet from Mike that has more than `<#>` likes.
 * Get the highest rated episode of *Dirty Jobs* since `<date>`.
 
+When deployed locally, the endpoints will be exposed at: [localhost:8080/api/query]().
 
-# 📚 Libraries 📚
+☝️ **TIP**: You can discover the defined endpoints with the following command:
+
+```shell
+egrep -R --include "*.java" '@RequestMapping|@GetMapping|@PostMapping|@PutMapping|@PatchMapping|@DeleteMapping' 
+```
+
+<h1 align="center">📚 Libraries 📚</h1>
 
 ## 📀 Data Model
 
@@ -185,8 +192,7 @@ type Query {
 }
 ```
 
-
-# Modules and Services
+<h1 align="center">🧠 Modules and Services 🧠</h1>
 
 These are services which process incoming data and requests in various ways in order to produce results, filter data, generate transcripts, and more.
 
@@ -245,12 +251,11 @@ to Mike Rowe. Data is ingested and published to a Kafka topic.
 
 Monitored topics can be configured in the properties file for this service.
 
-
-# 🦦💻 Kafka Stream Processors
+<h1 align="center"> 🦦 Kafka Stream Processors 🦦</h1>
 
 Stream processors use [Kafka Streams](https://kafka.apache.org/documentation/streams/) to process data.
 
-## 👍👎 Sentiment Analysis Service
+## 👍👎 Sentiment Analysis Stream Processor
 
 Placeholder/future.
 
@@ -258,7 +263,7 @@ The general idea is creating a Kafka Stream processor that takes content that me
 a sentiment score.
 
 
-# Key Items on TODO List
+<h1 align="center">✅ Key Items on TODO List ✅</h1>
 
 The "TODO" list here is endless, but a few focal points include:
 * Create the Kafka adapter and remove redundant code from various modules.
@@ -270,3 +275,9 @@ The "TODO" list here is endless, but a few focal points include:
 * Testcontainers setup ([example](https://nirajsonawane.github.io/2019/12/25/Testcontainers-With-Spring-Boot-For-Integration-Testing/))
 * Use Secrets to capture things like the Twitter API tokens.
 
+<!---
+Admin Notes:
+
+* I am using HTML syntax in a few places for centered text/images... I know it's more of a pain by breaking 
+the `#` rendering of some tools. Sorry!
+--->
