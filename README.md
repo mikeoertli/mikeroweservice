@@ -7,6 +7,8 @@
 A demo/sample project using Spring Boot, Kafka, REST, SQL, NoSQL, GraphQL, Gradle multimodule builds, etc., 
 in a microservice architecture.
 
+**This is not affiliated with Mike Rowe, Dirty Jobs, 'The Way I Heard It', or any other Mike-Rowe-based entity/product in ANY way.** 
+
 ## 🚨 Setting Expectations 🚨
 
 1. 🤓 This repo and its contents exist solely for the purpose of 🔬🧠 learning/playing with a few technologies and concepts (in no particular order): 
@@ -16,9 +18,10 @@ in a microservice architecture.
    4. [SQL](https://en.wikipedia.org/wiki/SQL) 
    5. [NoSQL](https://en.wikipedia.org/wiki/NoSQL)
    6. [GraphQL](https://www.graphql-java.com)
-   7. [Kafka (Streams)](https://kafka.apache.org/documentation/streams/)
-   8. [a monorepo](https://en.wikipedia.org/wiki/Monorepo)
-   9. [gradle multimodule builds](https://reflectoring.io/spring-boot-gradle-multi-module/), and more.
+   7. [Elasticsearch](https://www.elastic.co)
+   8. [Kafka (Streams)](https://kafka.apache.org/documentation/streams/)
+   9. [a monorepo](https://en.wikipedia.org/wiki/Monorepo)
+   10. [gradle multimodule builds](https://reflectoring.io/spring-boot-gradle-multi-module/), and more.
 2. 🚧 This is nowhere near complete – even in the "do an end-to-end 'hello world' test" sense.
 3. 🐣 There is no plan to fully implement each of the modules/services. 
 4. 🥸 Data will be canned and mocked in most cases.
@@ -118,6 +121,7 @@ Right now, it requires a pre-release version of Spring Boot to use. At the time 
 
 TODO: Integrate this to use the data model's POJOs: https://github.com/graphql-java-kickstart/graphql-java-tools
 
+The official [GraphQL Schema resources](https://graphql.org/learn/schema) are really useful.
 
 # Modules and Services
 
@@ -180,3 +184,13 @@ The general idea is creating a Kafka Stream processor that takes content that me
 a sentiment score.
 
 
+# Key Items on TODO List
+
+The "TODO" list here is endless, but a few focal points include:
+* Create the Kafka adapter and remove redundant code from various modules.
+* Figure out how to share `properties` files, right now each module has `application.properties` of its own.
+  * Lots of resources for this one, including:
+    * [Spring Boot Docs - Externalized Configuration](https://docs.spring.io/spring-boot/docs/current/reference/html/features.html#features.external-config)
+    * [StackOverflow](https://stackoverflow.com/questions/35663679/spring-boot-inherit-application-properties-from-dependency)
+    * [Baeldung - Properties with Spring and Spring Boot](https://www.baeldung.com/properties-with-spring)
+* Testcontainers setup ([example](https://nirajsonawane.github.io/2019/12/25/Testcontainers-With-Spring-Boot-For-Integration-Testing/))
