@@ -1,9 +1,12 @@
-# Mike's Mike Rowe Service Microservice
+<h1 align="center">Mike's Mike Rowe Service Microservice</h1>
 
-![Mike Rowe (source: thepodcastplayground.com)](https://thepodcastplayground.com/wp-content/uploads/2021/12/mike-rown-backstage-with-gentry-thomas-podcast-playground.jpg)
+<p align="center">
+<img width="200" alt="Mike Rowe (source: thepodcastplayground.com)" src="https://thepodcastplayground.com/wp-content/uploads/2021/12/mike-rown-backstage-with-gentry-thomas-podcast-playground.jpg"/>
+</p>
 
-## ⚠️ In order to learn more about microservices, I figured, what better way than with a *Mike Rowe Service*? ⚠️
+<h3 align="center">In order to learn more about microservices, I figured... <br>What better way than with a *Mike Rowe Service*? <br><br>🙊😜</h3>
 
+# Overview
 A demo/sample project using Spring Boot, Kafka, REST, SQL, NoSQL, GraphQL, Gradle multimodule builds, etc., 
 in a microservice architecture.
 
@@ -91,6 +94,10 @@ The exact endpoints are TBD for now, but some ideas include:
 
 This library contains POJO structures that serve as a common data model between services.
 
+```groovy
+api project(":model")
+```
+
 The original intent was to use JSON schema to define the beans and generate the POJOs as part of the
 build, however that is not included in the initial pass. 
 
@@ -100,6 +107,10 @@ The (tentative) plan was to use [jsonschema2dataclass/js2d-gradle](https://githu
 
 **This includes the `Data Model` library.**
 
+```groovy
+api project(":mongo-adapter")
+```
+
 An API wrapper around a MongoDB to make it easier for services to use MongoDB without implementing a database
 instance. This would also make it much easier to replace Mongo with an alternative solution at some point.
 
@@ -108,12 +119,40 @@ instance. This would also make it much easier to replace Mongo with an alternati
 
 **This includes the `Data Model` library.**
 
-This is a library that makes it exceedingly easy to integrate with Kafka or Kafka Streams as a publisher or receiver of Kafka data.
+Services can include this with:
+```groovy
+api project(":kafka-adapter")
+```
+
+This is a library that makes it exceedingly easy to integrate with Kafka or Kafka Streams as a publisher or 
+receiver of Kafka data.
+
+### Kafka Topics
+
+Kafka topics are defined centrally in `libs/kafka-adapter/src/main/resources/application.properties`. For example: 
+
+```properties
+#
+# Topics
+#
+kafka.topic.notification=notification
+kafka.topic.sentiment=sentiment
+kafka.topic.podcast=podcast
+kafka.topic.video=video
+kafka.topic.news=news
+kafka.topic.social=social
+kafka.topic.social.twitter=twitter
+kafka.topic.social.facebook=facebook
+```
 
 
 ## 📈 GraphQL Adapter
 
 **This includes the `Data Model` and `MongoDB Adapter` libraries.**
+
+```groovy
+api project(":graphql-adapter")
+```
 
 There are numerous resources for [GraphQL with Java](https://www.graphql-java.com/tutorials/getting-started-with-spring-boot/) 
 and Spring Boot. It seems as though I approach this at an inflection point between pre-official-Spring-Boot-GraphQL and post. 
@@ -123,25 +162,58 @@ TODO: Integrate this to use the data model's POJOs: https://github.com/graphql-j
 
 The official [GraphQL Schema resources](https://graphql.org/learn/schema) are really useful.
 
+The GraphQL Schema is defined in: `libs/graphql-adapter/src/main/resources/schema.graphqls`. This schema defines the
+data structures and query API for the GraphQL functionality.
+
+For example:
+
+```graphql
+type Query {
+  latestPodcastMentioningTopic(topic: String!): PodcastEpisode
+  mostPopularPodcastTopics(numMostPopular: Int): TopicList
+  podcastTranscriptByEpisodeNumber(episodeNumber: Int!): Transcript
+  podcastByEpisodeNumber(episodeNumber: Int!): PodcastEpisode
+  televisionTranscript(showName: String!, seriesNumber: Int!, episodeNumber: Int!): Transcript
+  televisionEpisode(showName: String!, seriesNumber: Int!, episodeNumber: Int!): TelevisionEpisode
+  mostPopularTelevisionEpisode(showName: String!, seriesNumber: Int): TelevisionEpisode
+  mostPopularTweetSince(numDays: Int): SocialMediaPost
+  mostRecentTweetWithNumLikes(numLikes: Int): SocialMediaPost
+  mostPopularSocialMediaPostSince(numDays: Int): SocialMediaPost
+  mostPopularMovies(numMovies: Int): [Movie!]
+}
+```
+
+
 # Modules and Services
+
+These are services which process incoming data and requests in various ways in order to produce results, filter data, generate transcripts, and more.
 
 ## 🎬 Movies and TV Service (IMDB Service)
 
-Retrieves data about TV and movies. This was called the "IMDB" service, but is likely going to use more "open" 
+Retrieves data about TV and movies. 
+
+This was called the "IMDB" service, but is likely going to use more "open" 
 alternatives like [The Movie Database (TMDB)](https://developers.themoviedb.org) or 
 [Open Movie Database (OMDB)](http://www.omdbapi.com).
 
-## ⚠️ Notification Service
+## 📧 Notification Service
 
 Based on the current rules/configuration, publish notifications for certain events.
 
 For example, send a push notification or SMS each time a podcast episode is posted or each time any 
 of Mike Rowe's content mentions the state of Colorado.
 
+Right now, this is a placeholder. Eventually this could just be the service interface for several services behind
+a curtain, things like [Twilio](https://twilio.com) (SMS), [Email](https://www.baeldung.com/spring-email), 
+[IFTTT](https://ifttt.com), [SimplePush](https://simplepush.io), [AWS SNS](https://aws.amazon.com/sns/), and others.
+
 
 ## 🎧 Podcast Service
 
 Retrieves episodes of Mike Rowe's podcast [The Way I Heard It](https://mikerowe.com/podcast/).
+
+Uses RSS processing with the [Feed Adapter Spring Integration](https://docs.spring.io/spring-integration/reference/html/feed.html) 
+(which uses [ROME](https://rometools.github.io/rome/) under the hood).
 
 Feeds media to the `Transcript Service` where a transcript does not yet exist in the cache.
 
@@ -158,7 +230,7 @@ Uses ElasticSearch to store transcripts.
 
 ### 📝 Development Note
 
-To start a simple ElasticSearch container:
+To start a simple ElasticSearch container (stand-alone, independent of this project):
 ```shell
 docker run -d --name elasticsearch -p 9200:9200 -e "discovery.type=single-node" elasticsearch:7.6.2
 ```
@@ -194,3 +266,5 @@ The "TODO" list here is endless, but a few focal points include:
     * [StackOverflow](https://stackoverflow.com/questions/35663679/spring-boot-inherit-application-properties-from-dependency)
     * [Baeldung - Properties with Spring and Spring Boot](https://www.baeldung.com/properties-with-spring)
 * Testcontainers setup ([example](https://nirajsonawane.github.io/2019/12/25/Testcontainers-With-Spring-Boot-For-Integration-Testing/))
+* Use Secrets to capture things like the Twitter API tokens.
+
