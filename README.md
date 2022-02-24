@@ -4,7 +4,7 @@
 <img width="200" alt="Mike Rowe (source: thepodcastplayground.com)" src="https://thepodcastplayground.com/wp-content/uploads/2021/12/mike-rown-backstage-with-gentry-thomas-podcast-playground.jpg"/>
 </p>
 
-<h3 align="center">In order to learn more about microservices, I figured... <br>What better way than with a *Mike Rowe Service*? <br><br>🙊😜</h3>
+<h3 align="center">In order to learn more about microservices, I figured... <br>What better way than with a <em>Mike Rowe Service</em>? <br><br>🙊😜</h3>
 
 # Overview
 A demo/sample project using Spring Boot, Kafka, REST, SQL, NoSQL, GraphQL, Gradle multimodule builds, etc., 
