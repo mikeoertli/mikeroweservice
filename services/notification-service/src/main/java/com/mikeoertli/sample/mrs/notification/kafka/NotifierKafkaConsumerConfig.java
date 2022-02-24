@@ -30,7 +30,7 @@ public class NotifierKafkaConsumerConfig
 {
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    @Value(value = "${kafka.notification.client.id}")
+    @Value(value = "${kafka.client.id.notification}")
     private String clientId;
 
     @Value(value = "${kafka.group.id}")
