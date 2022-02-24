@@ -25,12 +25,14 @@ in a microservice architecture.
    8. [Kafka (Streams)](https://kafka.apache.org/documentation/streams/)
    9. [a monorepo](https://en.wikipedia.org/wiki/Monorepo)
    10. [gradle multimodule builds](https://reflectoring.io/spring-boot-gradle-multi-module/), and more.
-2. 🚧 This is nowhere near complete – even in the "do an end-to-end 'hello world' test" sense.
+2. 🚧 This is ***nowhere near complete*** – not even in the "do an end-to-end 'hello world' test" sense.
 3. 🐣 There is no plan to fully implement each of the modules/services. 
 4. 🥸 Data will be canned and mocked in most cases.
-5. 🐳 For now, this uses `docker-compose` with a tentative future plan to deploy with K8s as another learning "playground."
-6. 🚨 This was created to learn about these technologies/concepts. ⚠️ **DO NOT consider this as a reference for how to do anything!** ⚠️ 
-7. 👋 Please don't hesitate to reach out with suggestions etc.
+5. 🐳 For now, this uses `docker-compose` 
+   1. There is a tentative future plan to deploy this with K8s since I'd like to get more hands-on with that too, but no ETA on that.
+6. 🚨 This was created to learn about these technologies/concepts. ⚠️ **DO NOT consider this as a reference for how to do anything the "right" way!** ⚠️
+7. 🙈 Apologies in advance for the lack of tests and javadocs, I plan to add both. The plan was to get an outline with stubbed modules in place first.
+8. 👋 Please don't hesitate to reach out with suggestions etc.
 
 Essentially, having lacked any production microservice experience prior to this repo's inception, 
 I wanted a "playground" in which to explore/learn a bunch of concepts and technologies.
