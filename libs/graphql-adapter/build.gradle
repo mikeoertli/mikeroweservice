@@ -1,0 +1,29 @@
+
+dependencies {
+//	api project(":model")
+	api project(":mongo-adapter") // includes the data model and kafka-adapter
+
+	// Newer solution requires un-released Spring Boot
+	// https://docs.spring.io/spring-graphql/docs/1.0.0-M2/reference/html/
+
+	implementation 'com.graphql-java:graphql-java:17.3'
+//	implementation 'com.graphql-java:graphql-java-spring-boot-starter-webmvc:2.0'
+	implementation 'com.graphql-java:graphql-java-spring-boot-starter-webmvc:2021-10-25T04-50-54-fbc162f'
+	implementation 'com.google.guava:guava:31.0.1-jre'
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// For tests, consider this: https://github.com/vimalrajselvam/test-graphql-java
+}
+
+// Code generation utils (found via awesome-graphql-java -- https://github.com/graphql-java/awesome-graphql-java )
+// schema-first: https://github.com/graphql-java-generator/graphql-gradle-plugin-project
+// or: https://github.com/kobylynskyi/graphql-java-codegen/tree/master/plugins/gradle
+// or: https://github.com/Distelli/graphql-apigen
+//
+// Example spring + graphQL: https://github.com/spring-petclinic/spring-petclinic-graphql
+// Reference: https://www.graphql-java.com/documentation/getting-started
+// https://github.com/graphql-java-kickstart/graphql-java-tools
+// https://github.com/graphql-java-kickstart/graphql-spring-boot
+// https://www.graphql-java.com/tutorials/getting-started-with-spring-boot/

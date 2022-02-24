@@ -1,0 +1,8 @@
+dependencies {
+//	api project(":model")
+	api project(":kafka-adapter")
+//	implementation 'org.apache.kafka:kafka-streams'
+//	implementation 'org.springframework.kafka:spring-kafka'
+	testImplementation 'org.springframework.integration:spring-integration-test'
+//	testImplementation 'org.springframework.kafka:spring-kafka-test'
+}

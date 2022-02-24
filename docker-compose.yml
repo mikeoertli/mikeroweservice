@@ -1,0 +1,142 @@
+version: '3.8'
+
+services:
+  client-api:
+    image: mikeoertli/mike-rowe-service-client-api:latest
+    hostname: client-api
+    container_name: mike-rowe-service-client-api
+    restart: unless-stopped
+    ports:
+      - "8080:8080"
+    expose:
+      - "8080"
+    depends_on:
+      - kafka
+      - zookeeper
+      - mongo-db
+#      - mongo-adapter
+#      - db-adapter
+      - notification-service
+
+#  mongo-adapter:
+#    image: mikeoertli/mike-rowe-service-mongo-adapter:latest
+#    hostname: mongo-adapter
+#    container_name: mike-rowe-service-mongo-adapter
+#    restart: unless-stopped
+#    depends_on:
+#      - mongo-db
+
+#  db:
+#    image: mikeoertli/mike-rowe-service-db-adapter:latest
+#    hostname: db
+#    container_name: mike-rowe-service-db-adapter
+#    restart: unless-stopped
+
+  notification-service:
+    image: mikeoertli/mike-rowe-service-notification-service:latest
+    hostname: notification-service
+    container_name: mike-rowe-service-notification-service
+    restart: unless-stopped
+
+
+  twitter-service:
+    image: mikeoertli/mike-rowe-service-twitter-service:latest
+    hostname: twitter-service
+    container_name: mike-rowe-service-twitter-service
+    restart: unless-stopped
+    depends_on:
+      - kafka
+      - zookeeper
+
+  sentiment-processor:
+    image: mikeoertli/mike-rowe-service-sentiment-processor:latest
+    hostname: sentiment-processor
+    container_name: mike-rowe-service-sentiment-processor
+    restart: unless-stopped
+    depends_on:
+      - kafka
+      - zookeeper
+
+  mongo-db:
+    image: mongo:5.0.6
+    hostname: mongo-db
+    container_name: mongo-db
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    expose:
+      - "27017"
+    command: --bind_ip_all 
+    volumes:
+      - ./docker/mapped-volumes/mongo-db:/data
+
+
+  mongo-client:
+    image: mongoclient/mongoclient:4.0.1
+    container_name: mongo-client
+    hostname: mongo-client
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    expose:
+      - "3000"
+    environment:
+      MONGO_URL: "mongodb://mongo-db:27017"
+      PORT: 3000
+
+
+  zookeeper:
+    image: zookeeper:3.7.0
+    hostname: zookeeper
+    container_name: zookeeper
+    restart: unless-stopped
+    ports:
+      - "2181:2181"
+    expose:
+      - "2181"
+    environment:
+        ZOO_MY_ID: 1
+        ZOO_PORT: 2181
+        # ZOO_SERVERS: server.1=zookeeper:2888:3888
+    volumes:
+      - ./docker/mapped-volumes/zookeeper/data:/data
+      - ./docker/mapped-volumes/zookeeper/datalog:/datalog
+  
+
+  # https://hub.docker.com/r/wurstmeister/kafka/tags
+  kafka-broker:
+    image: wurstmeister/kafka:2.13-2.8.1
+    hostname: kafka
+    container_name: kafka
+    restart: unless-stopped
+    ports:
+      - "9092:9092"
+      - "29092:29092"
+    expose:
+      - "9092"
+      - "29092"
+    environment:
+      # KAFKA_ADVERTISED_HOST_NAME: localhost
+      KAFKA_ADVERTISED_HOST_NAME: "kafka"
+      # KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,OUTSIDE:PLAINTEXT
+      # KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,OUTSIDE://localhost:29092
+      # KAFKA_ZOOKEEPER_CONNECT: "zookeeper:2181"
+
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_LISTENERS: INTERNAL://0.0.0.0:9092,OUTSIDE://0.0.0.0:29092
+      # KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,OUTSIDE://localhost:9094
+      # KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,OUTSIDE:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+
+      KAFKA_BROKER_ID: 1
+      # KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      # KAFKA_TOPIC_REPLICATION_FACTOR: 1
+      # The format here is <topic>:<# partitions>:<# replicas>
+      KAFKA_CREATE_TOPICS: "social:1:1,news:1:1,imdb:1:1"
+    depends_on:
+      - zookeeper
+    volumes:
+      - ./docker/mapped-volumes/kafka/data:/var/lib/kafka/data
+      - ./docker/mapped-volumes/kafka/logs:/kafka/kafka-logs-kafka

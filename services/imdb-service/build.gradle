@@ -1,0 +1,8 @@
+
+dependencies {
+//	api project(":model")
+	api project(":kafka-adapter")
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+//	implementation 'org.springframework.kafka:spring-kafka'
+//	testImplementation 'org.springframework.kafka:spring-kafka-test'
+}

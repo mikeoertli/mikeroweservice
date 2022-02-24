@@ -1,0 +1,15 @@
+
+//configurations {
+//	compileOnly {
+//		extendsFrom annotationProcessor
+//	}
+//}
+
+dependencies {
+//	api project(":model")
+	api project(":kafka-adapter")
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+//	implementation 'org.springframework.kafka:spring-kafka'
+//	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+//	testImplementation 'org.springframework.kafka:spring-kafka-test'
+}

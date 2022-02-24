@@ -1,0 +1,26 @@
+plugins {
+	id 'org.jsonschema2dataclass' version '4.2.0'
+}
+
+dependencies {
+	api 'org.springframework.boot:spring-boot-starter-json'
+	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+	implementation 'org.springframework.boot:spring-boot-autoconfigure'
+}
+
+jsonSchema2Pojo {
+	// Resource: https://github.com/jsonschema2dataclass/js2d-gradle
+
+    targetPackage = 'com.mikeoertli.sample.mrs.model' // specify package for your needs
+
+    source.setFrom files("${project.rootDir}/src/main/resources/json")
+
+	generateBuilders = true
+	includeCopyConstructor = true
+	includeGeneratedAnnotation = true
+	serializable = true
+	removeOldOutput = true
+	useOptionalForGetters = true
+//	usePrimitives = true
+}

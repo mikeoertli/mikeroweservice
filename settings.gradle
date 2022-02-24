@@ -1,0 +1,28 @@
+rootProject.name = 'mike-rowe-service'
+
+include ':client-api'
+include ':model'
+include ':mongo-adapter'
+include ':db-adapter'
+include ':kafka-adapter'
+include ':graphql-adapter'
+include ':notification-service'
+include ':twitter-service'
+include ':imdb-service'
+include ':podcast-service'
+include ':transcript-service'
+include ':sentiment-processor'
+
+// Only needed if module name != directory name
+project(':client-api').projectDir = "$rootDir/client-api" as File
+project(':mongo-adapter').projectDir = "$rootDir/libs/mongo-adapter" as File
+project(':db-adapter').projectDir = "$rootDir/libs/db-adapter" as File
+project(':model').projectDir = "$rootDir/libs/model" as File
+project(':kafka-adapter').projectDir = "$rootDir/libs/kafka-adapter" as File
+project(':graphql-adapter').projectDir = "$rootDir/libs/graphql-adapter" as File
+project(':notification-service').projectDir = "$rootDir/services/notification-service" as File
+project(':twitter-service').projectDir = "$rootDir/services/twitter-service" as File
+project(':imdb-service').projectDir = "$rootDir/services/imdb-service" as File
+project(':podcast-service').projectDir = "$rootDir/services/podcast-service" as File
+project(':transcript-service').projectDir = "$rootDir/services/transcript-service" as File
+project(':sentiment-processor').projectDir = "$rootDir/stream-processors/sentiment-processor" as File

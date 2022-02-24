@@ -1,0 +1,210 @@
+# https://graphql.org/learn/schema/
+
+type Query {
+  latestPodcastMentioningTopic(topic: String!): PodcastEpisode
+  mostPopularPodcastTopics(numMostPopular: Int): TopicList
+  podcastTranscriptByEpisodeNumber(episodeNumber: Int!): Transcript
+  podcastByEpisodeNumber(episodeNumber: Int!): PodcastEpisode
+  televisionTranscript(showName: String!, seriesNumber: Int!, episodeNumber: Int!): Transcript
+  televisionEpisode(showName: String!, seriesNumber: Int!, episodeNumber: Int!): TelevisionEpisode
+  mostPopularTelevisionEpisode(showName: String!, seriesNumber: Int): TelevisionEpisode
+  mostPopularTweetSince(numDays: Int): SocialMediaPost
+  mostRecentTweetWithNumLikes(numLikes: Int): SocialMediaPost
+  mostPopularSocialMediaPostSince(numDays: Int): SocialMediaPost
+  mostPopularMovies(numMovies: Int): [Movie!]
+}
+
+interface EpisodicMedia {
+  id: ID!
+  episodeNumber: Int
+  episodeName: String
+  seriesId: ID!
+  seriesName: String
+  iconImageUrl: String
+  contentType: ContentType
+  metadata: Map
+  transcriptId: ID
+  releaseTimestamp: String
+}
+
+type PodcastEpisode implements EpisodicMedia {
+  id: ID!
+  episodeNumber: Int
+  episodeName: String
+  seriesId: ID!
+  seriesName: String
+  iconImageUrl: String
+  contentType: ContentType
+  metadata: Map
+  transcriptId: ID
+  releaseTimestamp: String
+
+  host: Person!
+  coHosts: [Person!]
+  guests: [Person!]
+  rssFeedUrl: String
+  mediaUrl: String
+}
+
+type TelevisionEpisode implements EpisodicMedia {
+  id: ID!
+  episodeNumber: Int
+  episodeName: String
+  seriesId: ID!
+  seriesName: String
+  iconImageUrl: String
+  contentType: ContentType
+  metadata: Map
+  transcriptId: ID
+  releaseTimestamp: String
+
+  producers: [Person!]!
+  cast: [Person!]!
+  guests: [Person!]
+
+  seasonNumber: Int
+  mediaInfoUrl: String
+}
+
+type MapEntry {
+  id: ID
+  key: String
+  value: String
+}
+
+type Map {
+  id: ID
+  data: [MapEntry!]!
+}
+
+type PodcastSeries {
+  id: ID
+  name: String!
+  description: String
+  host: Person!
+  coHosts: [Person!]
+  rssFeedUrl: String!
+  iconImageUrl: String
+}
+
+type TelevisionSeries {
+  id: ID
+  name: String!
+  description: String
+  producers: [Person!]!
+  starCast: [Person!]!
+  seriesId: Int!
+  iconImageUrl: String
+  mediaInfoUrl: String
+  numSeasons: Int
+}
+
+type Movie {
+  id: ID
+  name: String!
+  description: String
+  producers: [Person!]!
+  cast: [Person!]!
+  iconImageUrl: String
+  metadata: Map
+  transcriptId: ID
+  releaseTimestamp: String
+}
+
+type Person {
+  id: ID
+  firstName: String
+  lastName: String
+  jobs: [Job]
+  socialProfiles: [SocialProfile]
+}
+
+type Job {
+  id: ID
+  jobTitle: String
+  companyName: String
+  url: String
+  joinDateYear: Int
+  endDateYear: Int
+}
+
+type Company {
+  id: ID
+  companyName: String
+  description: String
+  industry: String
+  leadershipTeam: [Person!]
+  boardOfDirectors: [Person!]
+  url: String
+  inceptionYear: Int
+}
+
+type SocialProfile {
+  id: ID
+  serviceName: String
+  url: String
+  username: String
+  numFollowers: Int
+  numFollowed: Int
+  accountCreationTimestamp: String
+  public: Boolean
+}
+
+type SocialMediaPost {
+  id: ID
+  serviceName: String
+  url: String
+  socialProfileId: ID
+  numLikes: Int
+  numShared: Int
+  timestamp: String
+}
+
+type SentimentScore {
+  id: ID
+  source: String
+  url: String
+  score: Int
+}
+
+type Transcript {
+  id: ID
+  sourceMediaId: ID
+  description: String
+  contentType: ContentType
+  participants: [Person!]!
+  timestamp: String
+  metadata: Map
+  topicList: TopicList
+}
+
+type TopicList {
+  id: ID
+  topics: [Topic!]!
+}
+
+type Topic {
+  id: ID
+  topic: String
+  source: Person
+  context: String
+  timestampSecondsInMedia: Int
+}
+
+enum ContentType {
+  PODCAST_HOST,
+  TELEVISION,
+  MOVIE,
+  PODCAST_GUEST,
+  TWITTER,
+  FACEBOOK,
+  INSTAGRAM,
+  OTHER_SOCIAL,
+  NEWS,
+  OTHER
+}
+
+enum ContentSource {
+  FROM_MIKE,
+  ABOUT_MIKE
+}
