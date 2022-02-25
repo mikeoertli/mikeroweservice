@@ -16,6 +16,8 @@ plugins {
     //   * Configures any JavaCompile tasks to use the -parameters compiler argument.
     id 'org.springframework.boot' version '2.6.3' apply false
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+
+    id "com.graphql_java_generator.graphql-gradle-plugin" version "${graphQLPluginVersion}" apply false
 }
 
 // https://spring.io/guides/gs/multi-module/

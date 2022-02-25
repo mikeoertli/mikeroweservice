@@ -22,7 +22,7 @@ interface EpisodicMedia {
   seriesName: String
   iconImageUrl: String
   contentType: ContentType
-  metadata: Map
+  metadata: MetadataMap
   transcriptId: ID
   releaseTimestamp: String
 }
@@ -35,7 +35,7 @@ type PodcastEpisode implements EpisodicMedia {
   seriesName: String
   iconImageUrl: String
   contentType: ContentType
-  metadata: Map
+  metadata: MetadataMap
   transcriptId: ID
   releaseTimestamp: String
 
@@ -54,7 +54,7 @@ type TelevisionEpisode implements EpisodicMedia {
   seriesName: String
   iconImageUrl: String
   contentType: ContentType
-  metadata: Map
+  metadata: MetadataMap
   transcriptId: ID
   releaseTimestamp: String
 
@@ -66,15 +66,15 @@ type TelevisionEpisode implements EpisodicMedia {
   mediaInfoUrl: String
 }
 
-type MapEntry {
+type MetadataItem {
   id: ID
   key: String
   value: String
 }
 
-type Map {
+type MetadataMap {
   id: ID
-  data: [MapEntry!]!
+  data: [MetadataItem!]!
 }
 
 type PodcastSeries {
@@ -106,7 +106,7 @@ type Movie {
   producers: [Person!]!
   cast: [Person!]!
   iconImageUrl: String
-  metadata: Map
+  metadata: MetadataMap
   transcriptId: ID
   releaseTimestamp: String
 }
@@ -174,7 +174,7 @@ type Transcript {
   contentType: ContentType
   participants: [Person!]!
   timestamp: String
-  metadata: Map
+  metadata: MetadataMap
   topicList: TopicList
 }
 

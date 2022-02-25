@@ -39,7 +39,8 @@ public class GraphQlProvider
     GraphQlDataFetchers graphQLDataFetchers;
 
     @Bean
-    public GraphQL graphQl() {
+    public GraphQL graphQl()
+    {
         return graphQl;
     }
 
@@ -53,7 +54,8 @@ public class GraphQlProvider
         logger.debug("Initialized the GraphQL instance from schema ({})", GRAPHQL_SCHEMA_FILE_RESOURCE);
     }
 
-    private GraphQLSchema buildSchema(String sdl) {
+    private GraphQLSchema buildSchema(String sdl)
+    {
         TypeDefinitionRegistry typeRegistry = new SchemaParser().parse(sdl);
         RuntimeWiring runtimeWiring = buildWiring();
         SchemaGenerator schemaGenerator = new SchemaGenerator();
@@ -61,10 +63,11 @@ public class GraphQlProvider
         return schemaGenerator.makeExecutableSchema(typeRegistry, runtimeWiring);
     }
 
-    private RuntimeWiring buildWiring() {
+    private RuntimeWiring buildWiring()
+    {
         return RuntimeWiring.newRuntimeWiring()
-                .type(newTypeWiring("Query").dataFetcher("bookById", graphQLDataFetchers.getBookByIdDataFetcher()))
-                .type(newTypeWiring("Book").dataFetcher("author", graphQLDataFetchers.getAuthorDataFetcher()))
+//                .type(newTypeWiring("Query").dataFetcher("bookById", graphQLDataFetchers.getBookByIdDataFetcher()))
+//                .type(newTypeWiring("Book").dataFetcher("author", graphQLDataFetchers.getAuthorDataFetcher()))
                 .build();
     }
 }

@@ -1,4 +1,4 @@
-<h1 align="center">Mike's Mike Rowe Service Microservice</h1>
+<h1 align="center">👷‍ Mike's Mike Rowe Service Microservice 👷‍</h1>
 
 <p align="center">
 <img width="200" alt="Mike Rowe (source: thepodcastplayground.com)" src="https://thepodcastplayground.com/wp-content/uploads/2021/12/mike-rown-backstage-with-gentry-thomas-podcast-playground.jpg"/>
@@ -18,7 +18,7 @@ in a microservice architecture.
    1. [Microservice Architecture](https://microservices.io) (see: [Architecture](#-architecture))
    2. [Spring Boot](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/) (throughout)
    3. [REST APIs](https://en.wikipedia.org/wiki/Representational_state_transfer) (see: [Client API](#-client-api-))
-   4. [SQL](https://en.wikipedia.org/wiki/SQL) with Spring Boot JPA (details TBD, maybe Postgres?) 
+   4. [SQL](https://en.wikipedia.org/wiki/SQL) with Spring Boot JPA (details TBD, maybe Postgres? Might also remove this module.) 
    5. [NoSQL](https://en.wikipedia.org/wiki/NoSQL) (in this case, [MongoDB](https://www.mongodb.com))
    6. [GraphQL](https://www.graphql-java.com) (see: [GraphQL Adapter](#-graphql-adapter))
    7. [Elasticsearch](https://www.elastic.co) (see: [Transcript Service](#-transcript-service))
@@ -63,7 +63,7 @@ All timestamps are either [unix epoch millis](https://en.wikipedia.org/wiki/Unix
 │   └── mapped-volumes
 ├── docker-compose.yml
 ├── libs
-│   ├── db-adapter
+│   ├── db-adapter (might be removed)
 │   ├── graphql-adapter
 │   ├── kafka-adapter
 │   ├── model
@@ -169,6 +169,11 @@ Right now, it requires a pre-release version of Spring Boot to use. At the time 
 
 TODO: Integrate this to use the data model's POJOs: https://github.com/graphql-java-kickstart/graphql-java-tools
 
+This project does leverage the kickstart library's suite of tools/capabilities, specifically [graphql-java-kickstart/graphql-spring-boot](https://github.com/graphql-java-kickstart/graphql-spring-boot).
+For more information, check out the [GraphQL Java Kickstart (Spring Boot)](https://www.graphql-java-kickstart.com/spring-boot/) documentation.
+
+More useful guides can be found on [codingconcepts.com](https://codingnconcepts.com/spring-boot/build-graphql-api-with-spring-boot/)
+
 The official [GraphQL Schema resources](https://graphql.org/learn/schema) are really useful.
 
 The GraphQL Schema is defined in: `libs/graphql-adapter/src/main/resources/schema.graphqls`. This schema defines the
@@ -192,6 +197,27 @@ type Query {
 }
 ```
 
+### GraphQL Libraries
+
+There are 3 primary choices, and things are especially confusing with Spring Boot's GraphQL starter being in a pre-release
+phase at the time of writing. I won't summarize it here, but there are some great resources to cover the library options – 
+I especially liked [this one](https://medium.com/springboot-chronicles/graphql-in-springboot-a-comparative-study-among-the-libraries-and-their-implementation-know-how-b0e8d544f2fc) 
+by [Soham Dasgupta](https://twitter.com/iamsoham). 
+[This one from codingconcepts.com](https://codingnconcepts.com/spring-boot/build-graphql-api-with-spring-boot/) is also helpful.
+
+* [graphql-java](https://github.com/graphql-java/graphql-java) ([How to GraphQL](https://www.howtographql.com/advanced/1-server/))
+* [graphql-java-kickstart](https://github.com/graphql-java-kickstart) ([GraphQL Java Kickstart Guide]())
+* [netflix-graphql-dgs](https://github.com/netflix/dgs-framework/) ([Getting Started](https://netflix.github.io/dgs/getting-started/))
+
+### Schema-First
+
+I have decided to take a "schema-first" approach, which means defining the `.graphqls` first and then generating POJOs 
+from this schema. 
+
+For POJO generation, this project uses the [graphql-java-generator/graphql-gradle-plugin-project](https://github.com/graphql-java-generator/graphql-gradle-plugin-project) gradle plugin. 
+The [Getting Started Guide](https://github.com/graphql-java-generator/GraphQL-Forum-Gradle-Tutorial-server) is also worth review.
+
+
 <h1 align="center">🧠 Modules and Services 🧠</h1>
 
 These are services which process incoming data and requests in various ways in order to produce results, filter data, generate transcripts, and more.
@@ -212,7 +238,7 @@ For example, send a push notification or SMS each time a podcast episode is post
 of Mike Rowe's content mentions the state of Colorado.
 
 Right now, this is a placeholder. Eventually this could just be the service interface for several services behind
-a curtain, things like [Twilio](https://twilio.com) (SMS), [Email](https://www.baeldung.com/spring-email), 
+a curtain, things like [Twilio](https://twilio.com) (SMS), [Email (... maybe?)](https://www.baeldung.com/spring-email), 
 [IFTTT](https://ifttt.com), [SimplePush](https://simplepush.io), [AWS SNS](https://aws.amazon.com/sns/), and others.
 
 
