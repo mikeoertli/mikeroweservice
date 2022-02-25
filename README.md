@@ -187,9 +187,9 @@ type Query {
   mostPopularPodcastTopics(numMostPopular: Int): TopicList
   podcastTranscriptByEpisodeNumber(episodeNumber: Int!): Transcript
   podcastByEpisodeNumber(episodeNumber: Int!): PodcastEpisode
-  televisionTranscript(showName: String!, seriesNumber: Int!, episodeNumber: Int!): Transcript
-  televisionEpisode(showName: String!, seriesNumber: Int!, episodeNumber: Int!): TelevisionEpisode
-  mostPopularTelevisionEpisode(showName: String!, seriesNumber: Int): TelevisionEpisode
+  televisionTranscript(showName: String!, seasonNumber: Int!, episodeNumber: Int!): Transcript
+  televisionEpisode(showName: String!, seasonNumber: Int!, episodeNumber: Int!): TelevisionEpisode
+  mostPopularTelevisionEpisode(showName: String!, seasonNumber: Int): TelevisionEpisode
   mostPopularTweetSince(numDays: Int): SocialMediaPost
   mostRecentTweetWithNumLikes(numLikes: Int): SocialMediaPost
   mostPopularSocialMediaPostSince(numDays: Int): SocialMediaPost
