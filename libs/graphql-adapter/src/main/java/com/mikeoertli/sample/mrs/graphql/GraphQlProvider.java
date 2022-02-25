@@ -31,7 +31,7 @@ import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
 public class GraphQlProvider
 {
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-    public static final String GRAPHQL_SCHEMA_FILE_RESOURCE = "schema.graphqls";
+    public static final String GRAPHQL_SCHEMA_FILE_RESOURCE = "schema/schema.graphqls";
 
     private GraphQL graphQl;
 

@@ -1,104 +1,41 @@
 plugins {
-	// Source: https://github.com/graphql-java-generator/GraphQL-Forum-Gradle-Tutorial-server
-	id "com.graphql_java_generator.graphql-gradle-plugin"
+	// Source: https://github.com/Netflix/dgs-codegen
+	// Guide: https://netflix.github.io/dgs/generating-code-from-schema/
+	// Note: version is dictated by the parent level build.gradle and gradle.properties files
+	id "com.netflix.dgs.codegen"
 }
 
 dependencies {
 	api project(":mongo-adapter") // includes the data model and kafka-adapter
 
-	// Source: https://github.com/graphql-java-generator/GraphQL-Forum-Gradle-Tutorial-server
-	// The graphql-java-runtime module aggregates all dependencies for the generated code, including the plugin runtime
-	// CAUTION: this version should be exactly the same as the graphql-gradle-plugin's version
-	// Version is defined in gradle.properties
-	implementation "com.graphql-java-generator:graphql-java-server-dependencies:${graphQLPluginVersion}"
-	implementation 'com.github.dozermapper:dozer-core:6.5.2'
-	implementation 'io.reactivex.rxjava2:rxjava:2.2.21'
+	// Note that versions are managed by the platform dependency plugin here (similar to how spring does it)
+	// Netflix DGS GraphQL: https://netflix.github.io/dgs/getting-started/
+	implementation(platform("com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:latest.release"))
+	implementation "com.netflix.graphql.dgs:graphql-dgs-spring-boot-starter"
+	implementation "com.netflix.graphql.dgs:graphql-dgs-extended-scalars"
+	implementation "com.netflix.graphql.dgs:graphql-dgs-subscriptions-websockets-autoconfigure"
 
-	// Newer solution requires un-released Spring Boot
-	// https://docs.spring.io/spring-graphql/docs/1.0.0-M2/reference/html/
-
-//	implementation 'com.graphql-java:graphql-java:17.3'
-//	implementation 'com.graphql-java:graphql-java-spring-boot-starter-webmvc:2.0'
-
-	// This includes graphql-java and all other required dependencies
-	implementation 'com.graphql-java-kickstart:graphql-spring-boot-starter:12.0.0'
-
-	implementation 'com.graphql-java:graphql-java-spring-boot-starter-webmvc:2021-10-25T04-50-54-fbc162f'
 	implementation 'com.google.guava:guava:31.0.1-jre'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	testImplementation 'com.graphql-java-kickstart:graphql-spring-boot-starter-test:12.0.0'
 
-	// For tests, consider this: https://github.com/vimalrajselvam/test-graphql-java
+	// Source: DGS sample project uses these - TBD If we will too
+	testImplementation 'com.netflix.graphql.dgs:graphql-dgs-client'
+	testImplementation 'io.projectreactor:reactor-test'
 }
 
-// Code generation utils (found via awesome-graphql-java -- https://github.com/graphql-java/awesome-graphql-java )
-// schema-first: https://github.com/graphql-java-generator/graphql-gradle-plugin-project
-// or: https://github.com/kobylynskyi/graphql-java-codegen/tree/master/plugins/gradle
-// or: https://github.com/Distelli/graphql-apigen
-//
-// Example spring + graphQL: https://github.com/spring-petclinic/spring-petclinic-graphql
-// Reference: https://www.graphql-java.com/documentation/getting-started
-// https://github.com/graphql-java-kickstart/graphql-java-tools
-// https://github.com/graphql-java-kickstart/graphql-spring-boot
-// https://www.graphql-java.com/tutorials/getting-started-with-spring-boot/
 
-// TODO - improve this to avoid use of `dependsOn`
-//        see: https://melix.github.io/blog/2021/10/gradle-quickie-dependson.html
-// The lines below make sure that the GraphQL plugin is executed before Java compiles, so that all sources are generated on time
-//compileJava.dependsOn generateServerCode
-compileJava {
-	dependsOn(generateServerCode)
-//	inputFile.from(generateServerCode.)
+// DGS Code generation
+// See specific config options: https://netflix.github.io/dgs/generating-code-from-schema/#configuring-code-generation
+generateJava{
+	schemaPaths = ["${projectDir}/src/main/resources/schema"] // List of directories containing schema files
+	packageName = 'com.mikeoertli.sample.mrs.graphql.model' // The package name to use to generate sources
+	generateClient = true // Enable generating the type safe query API
+//	typeMapping = ["MyGraphQLType": "com.mypackage.MyJavaType"]generateClient = true
+//	generateInterfaces = true
 }
 
-//processResources.dependsOn generateServerCode
-processResources {
-	dependsOn(generateServerCode)
-//	inputFile.from(generateServerCode.)
-}
-// -- end of the "dependsOn" declaration for generated sources and resources
-
-
-// The line below adds the generated sources as a java source folder
-//sourceSets.main.java.srcDirs += '/build/generated/sources/graphqlGradlePlugin'
-//outputDir='/build/generated/sources/graphqlGradlePlugin'
-sourceSets.main.java.srcDirs += '/build/generated/sources/graphqlGradlePlugin'
-
-//sourceSets {
-//	main {
-//		java {
-//			srcDir "${buildDir}/generated/sources/graphqlGradlePlugin"
-//		}
-//	}
-//}
-
-// Let's configure the GraphQL Gradle Plugin:
-// All available parameters are described here:
-// https://graphql-maven-plugin-project.graphql-java-generator.com/graphql-maven-plugin/generateServerCode-mojo.html
-generateServerCodeConf {
-//	packageName = 'org.forum.server'
-	packageName = 'com.mikeoertli.sample.mrs.graphql.model'
-
-	//  Indicates if the plugin should generate add the BatchLoaderEnvironment parameter to the batchLoader methods,
-	//  in DataFetchersDelegate. This parameter allows to get the context of the Batch Loader, including the context
-	//  associated to the id, when using the id has been added by the DataLoader.load() method.
-	generateBatchLoaderEnvironment = true
-
-	// scanBasePackages allows you to define additional packages that Spring will scan, to discover Spring beans,
-	// Spring data repositories or JPA entities. Values should be comma-separated.
-	scanBasePackages = 'com.mikeoertli.sample.mrs.graphql, com.graphql_java_generator'
-//	customScalars = [ [
-//							  graphQLTypeName: "Date",
-//							  javaType: "java.util.Date",
-//							  graphQLScalarTypeStaticField: "com.graphql_java_generator.customscalars.GraphQLScalarTypeDate.Date"
-//					  ] ]
-
-	// The parameters below change the 1.x default behavior. They are set to respect the behavior of the future 2.x versions
-	//generateBatchLoaderEnvironment = true
-	separateUtilityClasses = true
-}
 
 task printSourceSetInformation(){
 	doLast{

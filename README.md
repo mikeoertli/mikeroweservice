@@ -208,14 +208,18 @@ by [Soham Dasgupta](https://twitter.com/iamsoham).
 * [graphql-java](https://github.com/graphql-java/graphql-java) ([How to GraphQL](https://www.howtographql.com/advanced/1-server/))
 * [graphql-java-kickstart](https://github.com/graphql-java-kickstart) ([GraphQL Java Kickstart Guide]())
 * [netflix-graphql-dgs](https://github.com/netflix/dgs-framework/) ([Getting Started](https://netflix.github.io/dgs/getting-started/))
+  * [Here is some additional information](https://piotrminkowski.com/2021/04/08/an-advanced-graphql-with-spring-boot-and-netflix-dgs/) 
+    on using DGS GraphGL + Spring Boot.
+  * [DGS CodeGen plugin](https://netflix.github.io/dgs/generating-code-from-schema/) is used to enable schema-first.
 
 ### Schema-First
 
 I have decided to take a "schema-first" approach, which means defining the `.graphqls` first and then generating POJOs 
 from this schema. 
 
-For POJO generation, this project uses the [graphql-java-generator/graphql-gradle-plugin-project](https://github.com/graphql-java-generator/graphql-gradle-plugin-project) gradle plugin. 
-The [Getting Started Guide](https://github.com/graphql-java-generator/GraphQL-Forum-Gradle-Tutorial-server) is also worth review.
+For POJO generation, this project uses the [DGS CodeGen Plugin](https://github.com/Netflix/dgs-codegen/releases). 
+There is a guide for [Getting Started with DGS CodeGen](https://netflix.github.io/dgs/generating-code-from-schema/) 
+that is worth review too.
 
 
 <h1 align="center">🧠 Modules and Services 🧠</h1>

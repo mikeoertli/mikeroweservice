@@ -17,7 +17,9 @@ plugins {
     id 'org.springframework.boot' version '2.6.3' apply false
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 
-    id "com.graphql_java_generator.graphql-gradle-plugin" version "${graphQLPluginVersion}" apply false
+    // Source: https://github.com/Netflix/dgs-codegen
+    // Guide: https://netflix.github.io/dgs/generating-code-from-schema/
+    id "com.netflix.dgs.codegen" version "${dgsCodeGenPluginVersion}" apply false
 }
 
 // https://spring.io/guides/gs/multi-module/
