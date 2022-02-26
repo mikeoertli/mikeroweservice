@@ -22,11 +22,15 @@ plugins {
     id "com.netflix.dgs.codegen" version "${dgsCodeGenPluginVersion}" apply false
 }
 
+var projectVersion = rootProject.file('version.txt').text.trim()
+var shortVersion = projectVersion.replaceAll("-SNAPSHOT", "")
+print "\nProject: ${project.name} [v${projectVersion}]\n\n"
+
 // https://spring.io/guides/gs/multi-module/
 // Took a lot of guidance from: https://reflectoring.io/spring-boot-gradle-multi-module/
 subprojects {
     group = 'com.mikeoertli.sample.mrs'
-    version = '0.0.1-SNAPSHOT'
+    version = projectVersion
 
     apply plugin: 'java'
     apply plugin: 'org.springframework.boot'
@@ -44,18 +48,17 @@ subprojects {
     dependencyManagement {
         imports {
             // more info: https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/
-//            mavenBom("org.springframework.boot:spring-boot-dependencies:2.6.3")
             mavenBom(org.springframework.boot.gradle.plugin.SpringBootPlugin.BOM_COORDINATES)
         }
     }
 
     dependencies {
-        implementation("org.springframework.boot:spring-boot-devtools")
+        implementation 'org.springframework.boot:spring-boot-devtools'
         implementation 'org.springframework.boot:spring-boot-starter'
 
-        implementation 'org.apache.commons:commons-lang3:3.12.0'
+        implementation "org.apache.commons:commons-lang3:${apacheCommonsLang3Version}"
 
-        testImplementation 'org.assertj:assertj-core:3.22.0'
+        testImplementation "org.assertj:assertj-core:${assertJVersion}"
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
     }
 
@@ -64,15 +67,16 @@ subprojects {
     }
 
     // https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/#build-image.customization
-    bootBuildImage  {
+    // https://spring.io/guides/gs/spring-boot-docker/
+    tasks.named('bootBuildImage')  {
         // These are the modules for which we do not want to build an image
-        def noDockerModules = [ 'kafka-adapter', 'db' , 'mongo-adapter', 'model' ]
+        def noDockerModules = [ 'kafka-adapter', 'db-adapter' , 'mongo-adapter', 'model' ]
         if (noDockerModules.contains(project.name)) {
             enabled = false
         } else
         {
             // Create two tags, one with the current version and one with 'latest'
-            def imageName = 'mikeoertli/mike-rowe-service-' + project.name
+            imageName = 'mikeoertli/mike-rowe-service-' + project.name
             tags=[imageName + ':' + project.version, imageName + ':latest']
         }
     }

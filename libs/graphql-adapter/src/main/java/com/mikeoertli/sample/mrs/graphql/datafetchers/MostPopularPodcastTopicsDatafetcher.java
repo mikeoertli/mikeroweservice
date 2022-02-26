@@ -1,13 +1,11 @@
 package com.mikeoertli.sample.mrs.graphql.datafetchers;
 
-import com.mikeoertli.sample.mrs.graphql.model.DgsConstants;
 import com.mikeoertli.sample.mrs.graphql.model.types.TopicList;
 import com.mikeoertli.sample.mrs.mongo.IMediaRepository;
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsData;
 import com.netflix.graphql.dgs.DgsQuery;
 import com.netflix.graphql.dgs.InputArgument;
-import graphql.schema.DataFetchingEnvironment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
