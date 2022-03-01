@@ -68,6 +68,7 @@ subprojects {
 
     // https://docs.spring.io/spring-boot/docs/current/gradle-plugin/reference/htmlsingle/#build-image.customization
     // https://spring.io/guides/gs/spring-boot-docker/
+    // https://codingnconcepts.com/spring-boot/deployment-of-microservices-using-docker-and-jenkins/
     tasks.named('bootBuildImage')  {
         // These are the modules for which we do not want to build an image
         def noDockerModules = [ 'kafka-adapter', 'db-adapter' , 'mongo-adapter', 'model' ]

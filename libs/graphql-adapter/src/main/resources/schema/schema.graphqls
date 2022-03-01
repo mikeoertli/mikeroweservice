@@ -16,26 +16,26 @@ type Query {
 
 interface EpisodicMedia {
   id: ID!
-  episodeNumber: Int
-  episodeName: String
+  episodeNumber: Int!
+  episodeName: String!
   seriesId: ID!
   seriesName: String
   iconImageUrl: String
-  contentType: ContentType
-  metadata: MetadataMap
+  contentType: ContentType!
+  metadata: [MetadataItem!]!
   transcriptId: ID
   releaseTimestamp: String
 }
 
 type PodcastEpisode implements EpisodicMedia {
   id: ID!
-  episodeNumber: Int
-  episodeName: String
+  episodeNumber: Int!
+  episodeName: String!
   seriesId: ID!
   seriesName: String
   iconImageUrl: String
-  contentType: ContentType
-  metadata: MetadataMap
+  contentType: ContentType!
+  metadata: [MetadataItem!]!
   transcriptId: ID
   releaseTimestamp: String
 
@@ -48,13 +48,13 @@ type PodcastEpisode implements EpisodicMedia {
 
 type TelevisionEpisode implements EpisodicMedia {
   id: ID!
-  episodeNumber: Int
-  episodeName: String
+  episodeNumber: Int!
+  episodeName: String!
   seriesId: ID!
   seriesName: String
   iconImageUrl: String
-  contentType: ContentType
-  metadata: MetadataMap
+  contentType: ContentType!
+  metadata: [MetadataItem!]!
   transcriptId: ID
   releaseTimestamp: String
 
@@ -67,18 +67,13 @@ type TelevisionEpisode implements EpisodicMedia {
 }
 
 type MetadataItem {
-  id: ID
+  id: ID!
   key: String
   value: String
 }
 
-type MetadataMap {
-  id: ID
-  data: [MetadataItem!]!
-}
-
 type PodcastSeries {
-  id: ID
+  id: ID!
   name: String!
   description: String
   host: Person!
@@ -88,7 +83,7 @@ type PodcastSeries {
 }
 
 type TelevisionSeries {
-  id: ID
+  id: ID!
   name: String!
   description: String
   producers: [Person!]!
@@ -100,19 +95,19 @@ type TelevisionSeries {
 }
 
 type Movie {
-  id: ID
+  id: ID!
   name: String!
   description: String
   producers: [Person!]!
   cast: [Person!]!
   iconImageUrl: String
-  metadata: MetadataMap
+  metadata: [MetadataItem!]!
   transcriptId: ID
   releaseTimestamp: String
 }
 
 type Person {
-  id: ID
+  id: ID!
   firstName: String
   lastName: String
   jobs: [Job]
@@ -120,7 +115,7 @@ type Person {
 }
 
 type Job {
-  id: ID
+  id: ID!
   jobTitle: String
   companyName: String
   url: String
@@ -129,7 +124,7 @@ type Job {
 }
 
 type Company {
-  id: ID
+  id: ID!
   companyName: String
   description: String
   industry: String
@@ -140,7 +135,7 @@ type Company {
 }
 
 type SocialProfile {
-  id: ID
+  id: ID!
   serviceName: String
   url: String
   username: String
@@ -151,41 +146,41 @@ type SocialProfile {
 }
 
 type SocialMediaPost {
-  id: ID
-  serviceName: String
-  url: String
-  socialProfileId: ID
+  id: ID!
+  serviceName: String!
+  url: String!
+  socialProfileId: ID!
   numLikes: Int
   numShared: Int
-  timestamp: String
+  timestamp: String!
 }
 
 type SentimentScore {
-  id: ID
-  source: String
+  id: ID!
+  source: String!
   url: String
   score: Int
 }
 
 type Transcript {
-  id: ID
-  sourceMediaId: ID
+  id: ID!
+  sourceMediaId: ID!
   description: String
-  contentType: ContentType
+  contentType: ContentType!
   participants: [Person!]!
-  timestamp: String
-  metadata: MetadataMap
+  timestamp: String!
+  metadata: [MetadataItem!]!
   topicList: TopicList
 }
 
 type TopicList {
-  id: ID
+  id: ID!
   topics: [Topic!]!
 }
 
 type Topic {
-  id: ID
-  topic: String
+  id: ID!
+  topic: String!
   source: Person
   context: String
   timestampSecondsInMedia: Int

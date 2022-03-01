@@ -26,7 +26,7 @@ import java.lang.invoke.MethodHandles;
  * we can have something like this (note that by making the method name == the field name, we can omit that annotation param):
  * <pre>
  *     @DgsQuery
- *     public TelevisionEpisode televisionEpisode(@InputArgument("showName") String showName, @InputArgument("seriesNumber") int seriesNumber, @InputArgument("episodeNumber") int episodeNumber)
+ *     public TelevisionEpisode televisionEpisode(@InputArgument String showName, @InputArgument int seriesNumber, @InputArgument int episodeNumber)
  * </pre>
  * <p>
  * This is the integration point for resolving the given query response using a service that is of no concern
@@ -43,7 +43,7 @@ public class LatestPodcastMentioningTopicDatafetcher
     private IMediaRepository mediaRepo;
 
     @DgsQuery
-    public PodcastEpisode latestPodcastMentioningTopic(@InputArgument("topic") String topic)
+    public PodcastEpisode latestPodcastMentioningTopic(@InputArgument String topic)
     {
         return null;
     }

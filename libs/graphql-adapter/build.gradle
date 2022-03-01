@@ -30,9 +30,10 @@ dependencies {
 // See specific config options: https://netflix.github.io/dgs/generating-code-from-schema/#configuring-code-generation
 generateJava{
 	schemaPaths = ["${projectDir}/src/main/resources/schema"] // List of directories containing schema files
-	packageName = 'com.mikeoertli.sample.mrs.graphql.model' // The package name to use to generate sources
+	packageName = 'com.mikeoertli.sample.mrs.graphql.generated' // The package name to use to generate sources
 	generateClient = true // Enable generating the type safe query API
-//	typeMapping = ["MyGraphQLType": "com.mypackage.MyJavaType"]generateClient = true
+//	typeMapping = ["MyGraphQLType": "com.mypackage.MyJavaType"]
+//	generateClient = true
 //	generateInterfaces = true
 }
 
