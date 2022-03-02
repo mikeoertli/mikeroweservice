@@ -2,7 +2,7 @@
 
 type Query {
   latestPodcastMentioningTopic(topic: String!): PodcastEpisode
-  mostPopularPodcastTopics(numMostPopular: Int): TopicList
+  mostPopularPodcastTopics(numMostPopular: Int): [Topic!]!
   podcastTranscriptByEpisodeNumber(episodeNumber: Int!): Transcript
   podcastByEpisodeNumber(episodeNumber: Int!): PodcastEpisode
   televisionTranscript(showName: String!, seasonNumber: Int!, episodeNumber: Int!): Transcript
@@ -14,26 +14,40 @@ type Query {
   mostPopularMovies(numMovies: Int): [Movie!]
 }
 
-interface EpisodicMedia {
+interface Media {
   id: ID!
-  episodeNumber: Int!
-  episodeName: String!
-  seriesId: ID!
-  seriesName: String
-  iconImageUrl: String
+  mediaName: String!
+  artwork: Image
   contentType: ContentType!
   metadata: [MetadataItem!]!
   transcriptId: ID
   releaseTimestamp: String
+  topicList: [Topic!]!
 }
 
-type PodcastEpisode implements EpisodicMedia {
+interface EpisodicMedia implements Media {
   id: ID!
+  mediaName: String!
   episodeNumber: Int!
   episodeName: String!
   seriesId: ID!
   seriesName: String
-  iconImageUrl: String
+  artwork: Image
+  contentType: ContentType!
+  metadata: [MetadataItem!]!
+  transcriptId: ID
+  releaseTimestamp: String
+  topicList: [Topic!]!
+}
+
+type PodcastEpisode implements EpisodicMedia & Media {
+  id: ID!
+  mediaName: String!
+  episodeNumber: Int!
+  episodeName: String!
+  seriesId: ID!
+  seriesName: String
+  artwork: Image
   contentType: ContentType!
   metadata: [MetadataItem!]!
   transcriptId: ID
@@ -44,15 +58,17 @@ type PodcastEpisode implements EpisodicMedia {
   guests: [Person!]
   rssFeedUrl: String
   mediaUrl: String
+  topicList: [Topic!]!
 }
 
-type TelevisionEpisode implements EpisodicMedia {
+type TelevisionEpisode implements EpisodicMedia & Media {
   id: ID!
+  mediaName: String!
   episodeNumber: Int!
   episodeName: String!
   seriesId: ID!
   seriesName: String
-  iconImageUrl: String
+  artwork: Image
   contentType: ContentType!
   metadata: [MetadataItem!]!
   transcriptId: ID
@@ -64,12 +80,16 @@ type TelevisionEpisode implements EpisodicMedia {
 
   seasonNumber: Int
   mediaInfoUrl: String
+  topicList: [Topic!]!
 }
 
+# I tried using the extended scalars which support 'Object' in theory, but found that it generated an 'IObject' interface
+# and didn't treat it like a Java Object, so for now, will use value and type fields.
 type MetadataItem {
   id: ID!
   key: String
   value: String
+  dataType: String
 }
 
 type PodcastSeries {
@@ -79,7 +99,7 @@ type PodcastSeries {
   host: Person!
   coHosts: [Person!]
   rssFeedUrl: String!
-  iconImageUrl: String
+  artwork: Image
 }
 
 type TelevisionSeries {
@@ -89,7 +109,7 @@ type TelevisionSeries {
   producers: [Person!]!
   starCast: [Person!]!
   seriesId: Int!
-  iconImageUrl: String
+  artwork: Image
   mediaInfoUrl: String
   numSeasons: Int
 }
@@ -100,7 +120,7 @@ type Movie {
   description: String
   producers: [Person!]!
   cast: [Person!]!
-  iconImageUrl: String
+  artwork: Image
   metadata: [MetadataItem!]!
   transcriptId: ID
   releaseTimestamp: String
@@ -112,6 +132,13 @@ type Person {
   lastName: String
   jobs: [Job]
   socialProfiles: [SocialProfile]
+}
+
+type Role {
+  id: ID!
+  person: Person!
+  roleType: RoleType!
+  recurring: Boolean
 }
 
 type Job {
@@ -159,6 +186,7 @@ type SentimentScore {
   id: ID!
   source: String!
   url: String
+  summary: String
   score: Int
 }
 
@@ -170,12 +198,7 @@ type Transcript {
   participants: [Person!]!
   timestamp: String!
   metadata: [MetadataItem!]!
-  topicList: TopicList
-}
-
-type TopicList {
-  id: ID!
-  topics: [Topic!]!
+  topicList: [Topic!]!
 }
 
 type Topic {
@@ -186,17 +209,31 @@ type Topic {
   timestampSecondsInMedia: Int
 }
 
+type Image {
+  url: String
+}
+
 enum ContentType {
-  PODCAST_HOST,
+  PODCAST,
   TELEVISION,
   MOVIE,
-  PODCAST_GUEST,
+  WEB_VIDEO,
   TWITTER,
   FACEBOOK,
   INSTAGRAM,
   OTHER_SOCIAL,
   NEWS,
   OTHER
+}
+
+enum RoleType {
+  HOST,
+  CO_HOST,
+  GUEST,
+  ACTOR,
+  VOICE_ACTOR,
+  PRIMARY_SUBJECT,
+  SECONDARY_SUBJECT
 }
 
 enum ContentSource {

@@ -14,7 +14,7 @@ plugins {
     //   * Creates a configuration named productionRuntimeClasspath. It is equivalent to runtimeClasspath minus any dependencies that only appear in the developmentOnly configuration.
     //   * Configures any JavaCompile tasks with no configured encoding to use UTF-8.
     //   * Configures any JavaCompile tasks to use the -parameters compiler argument.
-    id 'org.springframework.boot' version '2.6.3' apply false
+    id 'org.springframework.boot' version '2.6.4' apply false
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 
     // Source: https://github.com/Netflix/dgs-codegen
@@ -24,7 +24,8 @@ plugins {
 
 var projectVersion = rootProject.file('version.txt').text.trim()
 var shortVersion = projectVersion.replaceAll("-SNAPSHOT", "")
-print "\nProject: ${project.name} [v${projectVersion}]\n\n"
+var dateTime = new Date();
+print "\n${project.name} [v${projectVersion}] --- Build time: ${dateTime}\n\n"
 
 // https://spring.io/guides/gs/multi-module/
 // Took a lot of guidance from: https://reflectoring.io/spring-boot-gradle-multi-module/
@@ -60,6 +61,7 @@ subprojects {
 
         testImplementation "org.assertj:assertj-core:${assertJVersion}"
         testImplementation 'org.springframework.boot:spring-boot-starter-test'
+        testImplementation "org.mockito:mockito-junit-jupiter:${mockitoVersion}"
     }
 
     test {
@@ -91,12 +93,12 @@ subprojects {
     }
 
     task sourcesJar(type: Jar, dependsOn:classes) {
-        classifier = 'sources'
+        archiveClassifier.set('sources')
         from sourceSets.main.allJava
     }
 
     task javadocJar(type: Jar) {
-        classifier = 'javadoc'
+        archiveClassifier.set('javadoc')
         from javadoc
     }
 
@@ -105,3 +107,12 @@ subprojects {
         archives javadocJar
     }
 }
+
+//Show additional details on deprecation warnings
+//allprojects {
+//    gradle.projectsEvaluated {
+//        tasks.withType(JavaCompile) {
+//            options.compilerArgs << "-Xlint:deprecation"
+//        }
+//    }
+//}

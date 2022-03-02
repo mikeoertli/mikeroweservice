@@ -1,7 +1,7 @@
 package com.mikeoertli.sample.mrs.graphql.datafetchers;
 
-import com.mikeoertli.sample.mrs.graphql.model.types.TelevisionEpisode;
-import com.mikeoertli.sample.mrs.mongo.IMediaRepository;
+import com.mikeoertli.sample.mrs.graphql.generated.types.ITelevisionEpisode;
+import com.mikeoertli.sample.mrs.graphql.kafka.KafkaQueryService;
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsData;
 import com.netflix.graphql.dgs.DgsQuery;
@@ -39,11 +39,16 @@ public class MostPopularTelevisionEpisodeDatafetcher
 {
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+    private final KafkaQueryService queryService;
+
     @Autowired
-    private IMediaRepository mediaRepo;
+    public MostPopularTelevisionEpisodeDatafetcher(KafkaQueryService queryService)
+    {
+        this.queryService = queryService;
+    }
 
     @DgsQuery
-    public TelevisionEpisode mostPopularTelevisionEpisode(@InputArgument String showName, @InputArgument int seasonNumber)
+    public ITelevisionEpisode mostPopularTelevisionEpisode(@InputArgument String showName, @InputArgument int seasonNumber)
     {
         return null;
     }

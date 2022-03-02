@@ -1,6 +1,6 @@
 package com.mikeoertli.sample.mrs.transcript.api;
 
-import com.mikeoertli.sample.mrs.transcript.service.TranscriptRetrievalService;
+import com.mikeoertli.sample.mrs.transcript.service.TranscriptService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class TranscriptQueryController
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @Autowired
-    private TranscriptRetrievalService service;
+    private TranscriptService service;
 
     @GetMapping("/podcast/{episodeNum}")
     public ResponseEntity<TranscriptWrapper> getTranscriptForPodcast(@RequestParam(value = "episodeNum") int episodeNum)

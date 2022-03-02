@@ -10,6 +10,8 @@ import twitter4j.TwitterStreamFactory;
 
 import javax.annotation.PreDestroy;
 import java.lang.invoke.MethodHandles;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * https://twitter.com/mikeroweworks
@@ -37,10 +39,15 @@ public class TwitterMonitorService
 //    private User mikeRoweUser;
     private TwitterStream twitterStream;
 
+    private final Set<String> monitoredKeywords = new HashSet<>();
+
     public void initialize(TwitterKafkaPublisher publisher)
     {
+        monitoredKeywords.add(mikeRoweHandle);
+
         twitterStream = TwitterStreamFactory.getSingleton();
-        twitterStream.user(mikeRoweHandle).onStatus(publisher::forwardTwitterStatusToKafka);
+//        twitterStream.user(mikeRoweHandle).onStatus(publisher::forwardTwitterStatusToKafka);
+        twitterStream.filter(monitoredKeywords.toArray(String[]::new)).onStatus(publisher::forwardTwitterStatusToKafka);
 //        TwitterFactory twitterFactory = new TwitterFactory();
 //        twitterApi = twitterFactory.getInstance(new AccessToken(oauthToken, oauthTokenSecret));
 //        try

@@ -1,18 +1,10 @@
 package com.mikeoertli.sample.mrs.graphql;
 
-import com.google.common.collect.ImmutableMap;
-import com.mikeoertli.sample.mrs.mongo.IMediaRepository;
-import com.mikeoertli.sample.mrs.mongo.ISocialResultsRepository;
-import graphql.schema.DataFetcher;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.lang.invoke.MethodHandles;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Source: https://www.graphql-java.com/tutorials/getting-started-with-spring-boot/
@@ -23,12 +15,6 @@ import java.util.Map;
 public class GraphQlDataFetchers
 {
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-
-    @Autowired
-    private IMediaRepository mediaRepo;
-
-    @Autowired
-    private ISocialResultsRepository socialMediaRepo;
 
 //    public DataFetcher<Map<String, String>> getBookByIdDataFetcher() {
 //        return dataFetchingEnvironment -> {

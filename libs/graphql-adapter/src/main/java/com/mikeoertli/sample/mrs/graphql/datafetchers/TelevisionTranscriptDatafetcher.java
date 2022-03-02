@@ -1,7 +1,7 @@
 package com.mikeoertli.sample.mrs.graphql.datafetchers;
 
-import com.mikeoertli.sample.mrs.graphql.model.types.Transcript;
-import com.mikeoertli.sample.mrs.mongo.IMediaRepository;
+import com.mikeoertli.sample.mrs.graphql.generated.types.Transcript;
+import com.mikeoertli.sample.mrs.graphql.kafka.KafkaQueryService;
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsData;
 import com.netflix.graphql.dgs.DgsQuery;
@@ -39,13 +39,16 @@ public class TelevisionTranscriptDatafetcher
 {
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+    private final KafkaQueryService queryService;
+
     @Autowired
-    private IMediaRepository mediaRepo;
+    public TelevisionTranscriptDatafetcher(KafkaQueryService queryService)
+    {
+        this.queryService = queryService;
+    }
 
     @DgsQuery
-    public Transcript televisionTranscript(@InputArgument String showName,
-                                           @InputArgument int seasonNumber,
-                                           @InputArgument int episodeNumber)
+    public Transcript televisionTranscript(@InputArgument String showName, @InputArgument Integer seasonNumber, @InputArgument Integer episodeNumber)
     {
         return null;
     }

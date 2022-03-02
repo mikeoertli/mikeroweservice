@@ -8,9 +8,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.elasticsearch.client.ClientConfiguration;
 import org.springframework.data.elasticsearch.client.RestClients;
+import org.springframework.data.elasticsearch.config.AbstractElasticsearchConfiguration;
 import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 import org.springframework.data.elasticsearch.core.ElasticsearchRestTemplate;
 import org.springframework.data.elasticsearch.repository.config.EnableElasticsearchRepositories;
+import org.springframework.lang.NonNull;
 
 import java.lang.invoke.MethodHandles;
 
@@ -21,7 +23,7 @@ import java.lang.invoke.MethodHandles;
  */
 @Configuration
 @EnableElasticsearchRepositories(basePackages = "com.mikeoertli.sample.mrs.transcript.elastic")
-public class ElasticSearchConfig
+public class ElasticSearchConfig extends AbstractElasticsearchConfiguration
 {
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
@@ -29,19 +31,20 @@ public class ElasticSearchConfig
     private String clusterNodesList;
 
     @Bean
-    public RestHighLevelClient client()
+    public ElasticsearchOperations elasticsearchTemplate()
     {
-        ClientConfiguration clientConfiguration
-                = ClientConfiguration.builder()
+        return new ElasticsearchRestTemplate(elasticsearchClient());
+    }
+
+    @Override
+    @Bean
+    @NonNull
+    public RestHighLevelClient elasticsearchClient()
+    {
+        ClientConfiguration clientConfiguration = ClientConfiguration.builder()
                 .connectedTo(clusterNodesList)
                 .build();
 
         return RestClients.create(clientConfiguration).rest();
-    }
-
-    @Bean
-    public ElasticsearchOperations elasticsearchTemplate()
-    {
-        return new ElasticsearchRestTemplate(client());
     }
 }

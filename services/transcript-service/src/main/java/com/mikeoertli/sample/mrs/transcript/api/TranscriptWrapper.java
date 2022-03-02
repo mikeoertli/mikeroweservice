@@ -9,6 +9,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 
 import java.lang.invoke.MethodHandles;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Wrapper for a transcript result.
@@ -29,17 +30,30 @@ public class TranscriptWrapper
     private Map<String, Object> metadata;
     private String transcriptBody;
 
+    @Field(type = FieldType.Keyword)
+    private String description;
+
+    @Field(type = FieldType.Nested, includeInParent = true)
+    private Set<String> topics;
+
+    @Field(type = FieldType.Nested, includeInParent = true)
+    private Set<String> participantIds;
+
     public TranscriptWrapper()
     {
     }
 
-    public TranscriptWrapper(String transcriptId, String timestamp, String mediaId, Map<String, Object> metadata, String transcriptBody)
+    public TranscriptWrapper(String transcriptId, String timestamp, String mediaId, Map<String, Object> metadata,
+                             String transcriptBody, String description, Set<String> topics, Set<String> participantIds)
     {
         this.transcriptId = transcriptId;
         this.timestamp = timestamp;
         this.mediaId = mediaId;
         this.metadata = metadata;
         this.transcriptBody = transcriptBody;
+        this.description = description;
+        this.topics = topics;
+        this.participantIds = participantIds;
     }
 
     public String getTranscriptId()
@@ -92,6 +106,36 @@ public class TranscriptWrapper
         this.transcriptBody = transcriptBody;
     }
 
+    public String getDescription()
+    {
+        return description;
+    }
+
+    public void setDescription(String description)
+    {
+        this.description = description;
+    }
+
+    public Set<String> getTopics()
+    {
+        return topics;
+    }
+
+    public void setTopics(Set<String> topics)
+    {
+        this.topics = topics;
+    }
+
+    public Set<String> getParticipantIds()
+    {
+        return participantIds;
+    }
+
+    public void setParticipantIds(Set<String> participantIds)
+    {
+        this.participantIds = participantIds;
+    }
+
     public static final class Builder
     {
         private String transcriptId;
@@ -99,6 +143,9 @@ public class TranscriptWrapper
         private String mediaId;
         private Map<String, Object> metadata;
         private String transcriptBody;
+        private String description;
+        private Set<String> topics;
+        private Set<String> participantIds;
 
         private Builder()
         {
@@ -139,6 +186,24 @@ public class TranscriptWrapper
             return this;
         }
 
+        public Builder withDescription(String description)
+        {
+            this.description = description;
+            return this;
+        }
+
+        public Builder withTopics(Set<String> topics)
+        {
+            this.topics = topics;
+            return this;
+        }
+
+        public Builder withParticipantIds(Set<String> participantIds)
+        {
+            this.participantIds = participantIds;
+            return this;
+        }
+
         public TranscriptWrapper build()
         {
             TranscriptWrapper transcriptWrapper = new TranscriptWrapper();
@@ -147,6 +212,9 @@ public class TranscriptWrapper
             transcriptWrapper.setMediaId(mediaId);
             transcriptWrapper.setMetadata(metadata);
             transcriptWrapper.setTranscriptBody(transcriptBody);
+            transcriptWrapper.setDescription(description);
+            transcriptWrapper.setTopics(topics);
+            transcriptWrapper.setParticipantIds(participantIds);
             return transcriptWrapper;
         }
     }

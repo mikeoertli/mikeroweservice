@@ -28,16 +28,19 @@ import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
  * @since 0.0.1
  */
 @Service
-public class TranscriptRetrievalService
+public class TranscriptService
 {
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    @Autowired
-    private ITranscriptElasticRepository transcriptRepository;
+    private final ITranscriptElasticRepository transcriptRepository;
+    private final ElasticsearchOperations searchTemplate;
 
     @Autowired
-    private ElasticsearchOperations searchTemplate;
-
+    public TranscriptService(ITranscriptElasticRepository transcriptRepository, ElasticsearchOperations searchTemplate)
+    {
+        this.transcriptRepository = transcriptRepository;
+        this.searchTemplate = searchTemplate;
+    }
 
     public Optional<TranscriptWrapper> getTranscript(String transcriptId)
     {

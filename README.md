@@ -53,6 +53,9 @@ All timestamps are either [unix epoch millis](https://en.wikipedia.org/wiki/Unix
 
 ## 📂 Directory Structure
 
+These are subject to change, this is a preliminary structure based on some early plans and has yet to be adapted to a
+(slightly) more well-considered design.
+
 ```
 ├── README.md
 ├── build.gradle
@@ -183,17 +186,17 @@ For example:
 
 ```graphql
 type Query {
-  latestPodcastMentioningTopic(topic: String!): PodcastEpisode
-  mostPopularPodcastTopics(numMostPopular: Int): TopicList
-  podcastTranscriptByEpisodeNumber(episodeNumber: Int!): Transcript
-  podcastByEpisodeNumber(episodeNumber: Int!): PodcastEpisode
-  televisionTranscript(showName: String!, seasonNumber: Int!, episodeNumber: Int!): Transcript
-  televisionEpisode(showName: String!, seasonNumber: Int!, episodeNumber: Int!): TelevisionEpisode
-  mostPopularTelevisionEpisode(showName: String!, seasonNumber: Int): TelevisionEpisode
-  mostPopularTweetSince(numDays: Int): SocialMediaPost
-  mostRecentTweetWithNumLikes(numLikes: Int): SocialMediaPost
-  mostPopularSocialMediaPostSince(numDays: Int): SocialMediaPost
-  mostPopularMovies(numMovies: Int): [Movie!]
+    latestPodcastMentioningTopic(topic: String!): PodcastEpisode
+    mostPopularPodcastTopics(numMostPopular: Int): [Topic!]!
+    podcastTranscriptByEpisodeNumber(episodeNumber: Int!): Transcript
+    podcastByEpisodeNumber(episodeNumber: Int!): PodcastEpisode
+    televisionTranscript(showName: String!, seasonNumber: Int!, episodeNumber: Int!): Transcript
+    televisionEpisode(showName: String!, seasonNumber: Int!, episodeNumber: Int!): TelevisionEpisode
+    mostPopularTelevisionEpisode(showName: String!, seasonNumber: Int): TelevisionEpisode
+    mostPopularTweetSince(numDays: Int): SocialMediaPost
+    mostRecentTweetWithNumLikes(numLikes: Int): SocialMediaPost
+    mostPopularSocialMediaPostSince(numDays: Int): SocialMediaPost
+    mostPopularMovies(numMovies: Int): [Movie!]
 }
 ```
 

@@ -1,7 +1,11 @@
 package com.mikeoertli.sample.mrs.graphql.datafetchers;
 
-import com.mikeoertli.sample.mrs.graphql.model.types.Transcript;
-import com.mikeoertli.sample.mrs.mongo.IMediaRepository;
+import com.mikeoertli.sample.mrs.graphql.generated.types.ContentType;
+import com.mikeoertli.sample.mrs.graphql.generated.types.Transcript;
+import com.mikeoertli.sample.mrs.graphql.kafka.ParticipantQueryService;
+import com.mikeoertli.sample.mrs.graphql.utils.ConverterUtil;
+import com.mikeoertli.sample.mrs.transcript.api.TranscriptWrapper;
+import com.mikeoertli.sample.mrs.transcript.service.TranscriptService;
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsData;
 import com.netflix.graphql.dgs.DgsQuery;
@@ -11,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.lang.invoke.MethodHandles;
+import java.util.Optional;
 
 /**
  * Data fetching component for the defined {@code Query} in the {@code .graphqls} schema file.
@@ -39,12 +44,23 @@ public class PodcastTranscriptByEpisodeNumberDatafetcher
 {
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+    private final TranscriptService transcriptService;
+    private final ParticipantQueryService participantQueryService;
+
     @Autowired
-    private IMediaRepository mediaRepo;
+    public PodcastTranscriptByEpisodeNumberDatafetcher(TranscriptService transcriptService, ParticipantQueryService participantQueryService)
+    {
+        this.transcriptService = transcriptService;
+        this.participantQueryService = participantQueryService;
+    }
 
     @DgsQuery
-    public Transcript podcastTranscriptByEpisodeNumber(@InputArgument int episodeNumber)
+    public Transcript podcastTranscriptByEpisodeNumber(@InputArgument Integer episodeNumber)
     {
-        return null;
+        Optional<TranscriptWrapper> transcriptWrapper = transcriptService.getTranscriptForPodcast(episodeNumber);
+
+        return transcriptWrapper
+                .map(wrapper -> ConverterUtil.convertTranscriptWrapper(wrapper, ContentType.PODCAST, participantQueryService))
+                .orElse(null);
     }
 }

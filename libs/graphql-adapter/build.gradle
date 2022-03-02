@@ -6,7 +6,9 @@ plugins {
 }
 
 dependencies {
-	api project(":mongo-adapter") // includes the data model and kafka-adapter
+//	api project(":mongo-adapter") // includes the data model and kafka-adapter
+	api project(":kafka-adapter") // includes the data model
+	api project(":transcript-service") // includes the data model
 
 	// Note that versions are managed by the platform dependency plugin here (similar to how spring does it)
 	// Netflix DGS GraphQL: https://netflix.github.io/dgs/getting-started/
@@ -29,21 +31,25 @@ dependencies {
 // DGS Code generation
 // See specific config options: https://netflix.github.io/dgs/generating-code-from-schema/#configuring-code-generation
 generateJava{
-	schemaPaths = ["${projectDir}/src/main/resources/schema"] // List of directories containing schema files
+//	schemaPaths = ["${projectDir}/src/main/resources/schema"] // List of directories containing schema files (commented out because we use the default)
 	packageName = 'com.mikeoertli.sample.mrs.graphql.generated' // The package name to use to generate sources
 	generateClient = true // Enable generating the type safe query API
 //	typeMapping = ["MyGraphQLType": "com.mypackage.MyJavaType"]
-//	generateClient = true
-//	generateInterfaces = true
+	generateInterfaces = true
 }
 
-
-task printSourceSetInformation(){
+// Debug task to print out the source (srcSet) for each task, the output directory for compiled code, and the compile classpath.
+// This isn't a replacement for a gradle dependencyInsight etc, but is a helpful quick tool.
+task printSourceSetInformation() {
 	doLast{
 		sourceSets.each { srcSet ->
-			println "["+srcSet.name+"]"
-			print "-->Source directories: "+srcSet.allJava.srcDirs+"\n"
-			print "-->Output directories: "+srcSet.output.classesDirs.files+"\n"
+			println "["  +srcSet.name + "]"
+			print "  --> Source directories: " + srcSet.allJava.srcDirs + "\n"
+			print "  --> Output directories: " + srcSet.output.classesDirs.files + "\n"
+			print "  --> Compile classpath:\n"
+			srcSet.compileClasspath.files.each {
+				print "     " + it.path + "\n"
+			}
 			println ""
 		}
 	}

@@ -1,7 +1,7 @@
 package com.mikeoertli.sample.mrs.graphql.datafetchers;
 
-import com.mikeoertli.sample.mrs.graphql.model.types.SocialMediaPost;
-import com.mikeoertli.sample.mrs.mongo.ISocialResultsRepository;
+import com.mikeoertli.sample.mrs.graphql.generated.types.ISocialMediaPost;
+import com.mikeoertli.sample.mrs.graphql.kafka.KafkaQueryService;
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsData;
 import com.netflix.graphql.dgs.DgsQuery;
@@ -38,11 +38,17 @@ import java.lang.invoke.MethodHandles;
 public class MostPopularTweetSinceDatafetcher
 {
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
+
+    private final KafkaQueryService queryService;
+
     @Autowired
-    private ISocialResultsRepository socialRepo;
+    public MostPopularTweetSinceDatafetcher(KafkaQueryService queryService)
+    {
+        this.queryService = queryService;
+    }
 
     @DgsQuery
-    public SocialMediaPost mostPopularTweetSince(@InputArgument Integer numDays)
+    public ISocialMediaPost mostPopularTweetSince(@InputArgument Integer numDays)
     {
         return null;
     }

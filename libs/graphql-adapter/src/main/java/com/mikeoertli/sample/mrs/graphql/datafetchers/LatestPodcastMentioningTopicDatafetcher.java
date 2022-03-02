@@ -1,7 +1,7 @@
 package com.mikeoertli.sample.mrs.graphql.datafetchers;
 
-import com.mikeoertli.sample.mrs.graphql.model.types.PodcastEpisode;
-import com.mikeoertli.sample.mrs.mongo.IMediaRepository;
+import com.mikeoertli.sample.mrs.graphql.generated.types.PodcastEpisode;
+import com.mikeoertli.sample.mrs.graphql.kafka.KafkaQueryService;
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsData;
 import com.netflix.graphql.dgs.DgsQuery;
@@ -39,8 +39,13 @@ public class LatestPodcastMentioningTopicDatafetcher
 {
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
+    private final KafkaQueryService queryService;
+
     @Autowired
-    private IMediaRepository mediaRepo;
+    public LatestPodcastMentioningTopicDatafetcher(KafkaQueryService queryService)
+    {
+        this.queryService = queryService;
+    }
 
     @DgsQuery
     public PodcastEpisode latestPodcastMentioningTopic(@InputArgument String topic)
