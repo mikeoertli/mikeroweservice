@@ -1,7 +1,10 @@
 package com.mikeoertli.sample.mrs.graphql.kafka;
 
-import com.mikeoertli.sample.mrs.model.result.MediaResult;
-import com.mikeoertli.sample.mrs.model.result.SocialResult;
+import com.mikeoertli.sample.mrs.model.generated.types.MediaResult;
+import com.mikeoertli.sample.mrs.model.generated.types.SeriesResult;
+import com.mikeoertli.sample.mrs.model.generated.types.SocialResult;
+import com.mikeoertli.sample.mrs.model.generated.types.SubjectResult;
+import com.mikeoertli.sample.mrs.model.generated.types.TranscriptResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -16,14 +19,25 @@ import java.lang.invoke.MethodHandles;
  *
  * @since 0.0.1
  */
-@KafkaListener(id = "${kafka.client.id.graphql}", groupId = "${kafka.group.id}")
+@KafkaListener(
+        topics = {
+                "${kafka.topic.notification}",
+                "${kafka.topic.transcript}",
+                "${kafka.topic.sentiment}",
+                "${kafka.topic.media}",
+                "${kafka.topic.news}",
+                "${kafka.topic.social}",
+                "${kafka.topic.company}",
+                "${kafka.topic.person}",
+                "${kafka.topic.subject}"},
+        id = "${kafka.client.id.graphql}",
+        groupId = "${kafka.group.id}")
 public class KafkaGraphqlReceiver
 {
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
     @Value(value = "${kafka.group.id}")
     private String groupId;
-
 
     @KafkaHandler
     public void listen(@Payload String payload)
@@ -42,6 +56,24 @@ public class KafkaGraphqlReceiver
 
     @KafkaHandler
     public void listen(SocialResult socialResult)
+    {
+
+    }
+
+    @KafkaHandler
+    public void listen(TranscriptResult transcriptResult)
+    {
+
+    }
+
+    @KafkaHandler
+    public void listen(SeriesResult seriesResult)
+    {
+
+    }
+
+    @KafkaHandler
+    public void listen(SubjectResult subjectResult)
     {
 
     }

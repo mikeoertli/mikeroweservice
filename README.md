@@ -66,7 +66,7 @@ These are subject to change, this is a preliminary structure based on some early
 │   └── mapped-volumes
 ├── docker-compose.yml
 ├── libs
-│   ├── db-adapter (might be removed)
+│   ├── db-adapter (removed)
 │   ├── graphql-adapter
 │   ├── kafka-adapter
 │   ├── model
@@ -110,10 +110,9 @@ This library contains POJO structures that serve as a common data model between 
 api project(":model")
 ```
 
-The original intent was to use JSON schema to define the beans and generate the POJOs as part of the
-build, however that is not included in the initial pass. 
-
-The (tentative) plan was to use [jsonschema2dataclass/js2d-gradle](https://github.com/jsonschema2dataclass/js2d-gradle).
+The data model uses code generation courtesy of the [Netflix DGS CodeGen](https://netflix.github.io/dgs/generating-code-from-schema/)  
+plugin for GraphQL. This lets us leverage the GraphQL style of schema definition that is widely used and flexible and  
+allows for the common use of POJOs between Kafka, GraphQL, and other modules.
 
 ## 🧩 MongoDB Adapter
 
@@ -148,19 +147,20 @@ Kafka topics are defined centrally in `libs/kafka-adapter/src/main/resources/app
 # Topics
 #
 kafka.topic.notification=notification
+kafka.topic.transcript=transcript
 kafka.topic.sentiment=sentiment
-kafka.topic.podcast=podcast
-kafka.topic.video=video
+kafka.topic.media=media
 kafka.topic.news=news
 kafka.topic.social=social
-kafka.topic.social.twitter=twitter
-kafka.topic.social.facebook=facebook
+kafka.topic.company=company
+kafka.topic.person=person
+kafka.topic.subject=subject
 ```
 
 
 ## 📈 GraphQL Adapter
 
-**This includes the `Data Model` and `MongoDB Adapter` libraries.**
+**This includes the `Data Model` and `Kafka Adapter` libraries.**
 
 ```groovy
 api project(":graphql-adapter")

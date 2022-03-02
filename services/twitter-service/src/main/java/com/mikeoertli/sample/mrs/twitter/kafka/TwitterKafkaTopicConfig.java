@@ -27,8 +27,8 @@ public class TwitterKafkaTopicConfig
     @Value("${kafka.bootstrap.servers}")
     private String bootstrapServers;
 
-    @Value(value = "${kafka.topic.social.twitter}")
-    private String twitterStatusTopicName;
+    @Value(value = "${kafka.topic.social}")
+    private String socialMediaTopicName;
 
     @Bean
     public KafkaAdmin createKafkaAdmin()
@@ -41,6 +41,6 @@ public class TwitterKafkaTopicConfig
     @Bean
     public NewTopic getTwitterStatusTopic()
     {
-        return new NewTopic(twitterStatusTopicName, 1, (short) 1);
+        return new NewTopic(socialMediaTopicName, 1, (short) 1);
     }
 }

@@ -14,8 +14,8 @@ plugins {
     //   * Creates a configuration named productionRuntimeClasspath. It is equivalent to runtimeClasspath minus any dependencies that only appear in the developmentOnly configuration.
     //   * Configures any JavaCompile tasks with no configured encoding to use UTF-8.
     //   * Configures any JavaCompile tasks to use the -parameters compiler argument.
-    id 'org.springframework.boot' version '2.6.4' apply false
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'org.springframework.boot' version "${springBootVersion}" apply false
+    id 'io.spring.dependency-management' version "${springDepMgmtVersion}"
 
     // Source: https://github.com/Netflix/dgs-codegen
     // Guide: https://netflix.github.io/dgs/generating-code-from-schema/
@@ -28,7 +28,7 @@ var dateTime = new Date();
 print "\n${project.name} [v${projectVersion}] --- Build time: ${dateTime}\n\n"
 
 // https://spring.io/guides/gs/multi-module/
-// Took a lot of guidance from: https://reflectoring.io/spring-boot-gradle-multi-module/
+// Took a lot of guidance about multi-module builds from: https://reflectoring.io/spring-boot-gradle-multi-module/
 subprojects {
     group = 'com.mikeoertli.sample.mrs'
     version = projectVersion
@@ -105,6 +105,23 @@ subprojects {
     artifacts {
         archives sourcesJar
         archives javadocJar
+    }
+
+    // Debug task to print out the source (srcSet) for each task, the output directory for compiled code, and the compile classpath.
+    // This isn't a replacement for a gradle dependencyInsight etc, but is a helpful quick tool.
+    task printSourceSetInformation() {
+        doLast {
+            sourceSets.each { srcSet ->
+                println "[" + srcSet.name + "]"
+                print "  --> Source directories: " + srcSet.allJava.srcDirs + "\n"
+                print "  --> Output directories: " + srcSet.output.classesDirs.files + "\n"
+                print "  --> Compile classpath:\n"
+                srcSet.compileClasspath.files.each {
+                    print "     " + it.path + "\n"
+                }
+                println ""
+            }
+        }
     }
 }
 

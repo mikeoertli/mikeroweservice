@@ -1,26 +1,29 @@
 plugins {
-	id 'org.jsonschema2dataclass' version '4.2.0'
+	// Source: https://github.com/Netflix/dgs-codegen
+	// Guide: https://netflix.github.io/dgs/generating-code-from-schema/
+	// Note: version is dictated by the parent level build.gradle and gradle.properties files
+	id "com.netflix.dgs.codegen"
 }
+
 
 dependencies {
 	api 'org.springframework.boot:spring-boot-starter-json'
-	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+	// Note that versions are managed by the platform dependency plugin here (similar to how spring does it)
+	// Netflix DGS GraphQL: https://netflix.github.io/dgs/getting-started/
+	api(platform("com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:latest.release"))
+	api "com.netflix.graphql.dgs:graphql-dgs-extended-scalars"
+//	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
 
 	implementation 'org.springframework.boot:spring-boot-autoconfigure'
 }
 
-jsonSchema2Pojo {
-	// Resource: https://github.com/jsonschema2dataclass/js2d-gradle
-
-    targetPackage = 'com.mikeoertli.sample.mrs.model' // specify package for your needs
-
-    source.setFrom files("${project.rootDir}/src/main/resources/json")
-
-	generateBuilders = true
-	includeCopyConstructor = true
-	includeGeneratedAnnotation = true
-	serializable = true
-	removeOldOutput = true
-	useOptionalForGetters = true
-//	usePrimitives = true
+// DGS Code generation
+// See specific config options: https://netflix.github.io/dgs/generating-code-from-schema/#configuring-code-generation
+generateJava{
+//	schemaPaths = ["${projectDir}/src/main/resources/schema"] // List of directories containing schema files (commented out because we use the default)
+	packageName = 'com.mikeoertli.sample.mrs.model.generated' // The package name to use to generate sources
+	generateClient = true // Enable generating the type safe query API
+	typeMapping = ["Object": "java.lang.Object",
+				   "Long": "java.lang.Long"]
+	generateInterfaces = true
 }

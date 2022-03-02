@@ -1,7 +1,7 @@
 package com.mikeoertli.sample.mrs.graphql.datafetchers;
 
-import com.mikeoertli.sample.mrs.graphql.generated.types.ContentType;
-import com.mikeoertli.sample.mrs.graphql.generated.types.Transcript;
+import com.mikeoertli.sample.mrs.model.generated.types.ContentType;
+import com.mikeoertli.sample.mrs.model.generated.types.Transcript;
 import com.mikeoertli.sample.mrs.graphql.kafka.ParticipantQueryService;
 import com.mikeoertli.sample.mrs.graphql.utils.ConverterUtil;
 import com.mikeoertli.sample.mrs.transcript.api.TranscriptWrapper;

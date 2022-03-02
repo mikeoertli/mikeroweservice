@@ -14,20 +14,30 @@ type Query {
   mostPopularMovies(numMovies: Int): [Movie!]
 }
 
+union MediaResult = PodcastEpisode | TelevisionEpisode | Movie
+union TranscriptResult = Transcript | TranscriptSection
+union SeriesResult = TelevisionSeries | PodcastSeries
+union SubjectResult = Topic | Person | Company
+union SocialResult = SocialMediaPost | SocialProfile
+
+scalar Object
+scalar Long
+
 interface Media {
   id: ID!
-  mediaName: String!
+  name: String!
   artwork: Image
   contentType: ContentType!
   metadata: [MetadataItem!]!
   transcriptId: ID
   releaseTimestamp: String
   topicList: [Topic!]!
+  durationSec: Long!
 }
 
 interface EpisodicMedia implements Media {
   id: ID!
-  mediaName: String!
+  name: String!
   episodeNumber: Int!
   episodeName: String!
   seriesId: ID!
@@ -38,11 +48,12 @@ interface EpisodicMedia implements Media {
   transcriptId: ID
   releaseTimestamp: String
   topicList: [Topic!]!
+  durationSec: Long!
 }
 
 type PodcastEpisode implements EpisodicMedia & Media {
   id: ID!
-  mediaName: String!
+  name: String!
   episodeNumber: Int!
   episodeName: String!
   seriesId: ID!
@@ -52,6 +63,7 @@ type PodcastEpisode implements EpisodicMedia & Media {
   metadata: [MetadataItem!]!
   transcriptId: ID
   releaseTimestamp: String
+  durationSec: Long!
 
   host: Person!
   coHosts: [Person!]
@@ -63,7 +75,7 @@ type PodcastEpisode implements EpisodicMedia & Media {
 
 type TelevisionEpisode implements EpisodicMedia & Media {
   id: ID!
-  mediaName: String!
+  name: String!
   episodeNumber: Int!
   episodeName: String!
   seriesId: ID!
@@ -73,6 +85,7 @@ type TelevisionEpisode implements EpisodicMedia & Media {
   metadata: [MetadataItem!]!
   transcriptId: ID
   releaseTimestamp: String
+  durationSec: Long!
 
   producers: [Person!]!
   cast: [Person!]!
@@ -88,8 +101,7 @@ type TelevisionEpisode implements EpisodicMedia & Media {
 type MetadataItem {
   id: ID!
   key: String
-  value: String
-  dataType: String
+  value: Object
 }
 
 type PodcastSeries {
@@ -114,9 +126,10 @@ type TelevisionSeries {
   numSeasons: Int
 }
 
-type Movie {
+type Movie implements Media {
   id: ID!
   name: String!
+  contentType: ContentType!
   description: String
   producers: [Person!]!
   cast: [Person!]!
@@ -124,6 +137,8 @@ type Movie {
   metadata: [MetadataItem!]!
   transcriptId: ID
   releaseTimestamp: String
+  topicList: [Topic!]!
+  durationSec: Long!
 }
 
 type Person {
@@ -197,6 +212,17 @@ type Transcript {
   contentType: ContentType!
   participants: [Person!]!
   timestamp: String!
+  metadata: [MetadataItem!]!
+  topicList: [Topic!]!
+  body: [TranscriptSection!]!
+}
+
+type TranscriptSection {
+  id: ID!
+  transcriptId: ID!
+  description: String
+  sectionIndex: Int!
+  participants: [Person!]!
   metadata: [MetadataItem!]!
   topicList: [Topic!]!
 }

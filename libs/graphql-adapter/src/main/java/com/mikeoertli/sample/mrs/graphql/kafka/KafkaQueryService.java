@@ -1,6 +1,6 @@
 package com.mikeoertli.sample.mrs.graphql.kafka;
 
-import com.mikeoertli.sample.mrs.graphql.generated.types.IPodcastEpisode;
+import com.mikeoertli.sample.mrs.model.generated.types.IPodcastEpisode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,11 +1,13 @@
 package com.mikeoertli.sample.mrs.graphql.utils;
 
-import com.mikeoertli.sample.mrs.graphql.generated.types.ContentType;
-import com.mikeoertli.sample.mrs.graphql.generated.types.IMetadataItem;
-import com.mikeoertli.sample.mrs.graphql.generated.types.ITopic;
-import com.mikeoertli.sample.mrs.graphql.generated.types.MetadataItem;
-import com.mikeoertli.sample.mrs.graphql.generated.types.Topic;
-import com.mikeoertli.sample.mrs.graphql.generated.types.Transcript;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mikeoertli.sample.mrs.model.generated.types.ContentType;
+import com.mikeoertli.sample.mrs.model.generated.types.IMetadataItem;
+import com.mikeoertli.sample.mrs.model.generated.types.ITopic;
+import com.mikeoertli.sample.mrs.model.generated.types.MetadataItem;
+import com.mikeoertli.sample.mrs.model.generated.types.Topic;
+import com.mikeoertli.sample.mrs.model.generated.types.Transcript;
 import com.mikeoertli.sample.mrs.graphql.kafka.ParticipantQueryService;
 import com.mikeoertli.sample.mrs.transcript.api.TranscriptWrapper;
 import org.slf4j.Logger;
@@ -53,9 +55,7 @@ public class ConverterUtil
                 .id(key);
         if (value != null)
         {
-            builder
-                    .value(value.toString())
-                    .dataType(value.getClass().getName());
+            builder.value(value);
         }
         return builder.build();
     }
@@ -71,5 +71,20 @@ public class ConverterUtil
     public static List<ITopic> createTopicList(Collection<String> topicNames)
     {
         return topicNames.stream().map(ConverterUtil::createTopic).collect(Collectors.toList());
+    }
+
+    /**
+     * Create a "pretty" JSON String representation of the given object type.
+     *
+     * IMPORTANT NOTE: Note that this will fail if any of the fields of the given object are Mocked!
+     *
+     * @param object the object whose JSON representation is being requested
+     * @return the given object as represented by a JSON string in a "pretty" format
+     * @throws JsonProcessingException if the given object could not be parsed as JSON
+     */
+    public static String toPrettyJson(Object object) throws JsonProcessingException
+    {
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(object);
     }
 }

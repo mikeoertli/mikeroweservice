@@ -1,6 +1,6 @@
 package com.mikeoertli.sample.mrs.mongo;
 
-import com.mikeoertli.sample.mrs.model.result.SocialResult;
+import com.mikeoertli.sample.mrs.model.generated.types.SocialResult;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**

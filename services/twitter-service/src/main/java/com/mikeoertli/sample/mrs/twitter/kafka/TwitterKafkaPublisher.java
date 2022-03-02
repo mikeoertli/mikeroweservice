@@ -1,7 +1,5 @@
 package com.mikeoertli.sample.mrs.twitter.kafka;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.util.JSONPObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +9,6 @@ import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
 import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.util.concurrent.ListenableFutureCallback;
-import twitter4j.JSONObject;
 import twitter4j.Status;
 
 import java.lang.invoke.MethodHandles;
@@ -29,12 +26,12 @@ public class TwitterKafkaPublisher
     @Autowired
     private KafkaTemplate<String, Status> statusKafkaTemplate;
 
-    @Value(value = "${kafka.topic.social.twitter}")
-    private String kafkaTwitterTopic;
+    @Value(value = "${kafka.topic.social}")
+    private String kafkaSocialMediaTopic;
 
     public void forwardTwitterStatusToKafka(Status status)
     {
-        ListenableFuture<SendResult<String, Status>> future = statusKafkaTemplate.send(kafkaTwitterTopic, status);
+        ListenableFuture<SendResult<String, Status>> future = statusKafkaTemplate.send(kafkaSocialMediaTopic, status);
 
         future.addCallback(new ListenableFutureCallback<>()
         {

@@ -25,15 +25,15 @@ public class MockSentimentProcessor implements ISentimentProcessor
     @Value("${kafka.topic.sentiment}")
     private String sentimentTopic;
 
-    @Value("${kafka.topic.social.twitter}")
-    private String twitterStatusTopic;
+    @Value("${kafka.topic.social}")
+    private String socialMediaTopic;
 
     private static final Serde<String> STRING_SERDE = Serdes.String();
 
     @Autowired
     void buildPipeline(StreamsBuilder streamsBuilder)
     {
-        KStream<String, String> messageStream = streamsBuilder.stream(twitterStatusTopic, Consumed.with(STRING_SERDE, STRING_SERDE));
+        KStream<String, String> messageStream = streamsBuilder.stream(socialMediaTopic, Consumed.with(STRING_SERDE, STRING_SERDE));
 
         messageStream
                 .mapValues(this::getSentimentScore)

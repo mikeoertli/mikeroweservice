@@ -1,6 +1,6 @@
 package com.mikeoertli.sample.mrs.graphql.kafka;
 
-import com.mikeoertli.sample.mrs.graphql.generated.types.IPerson;
+import com.mikeoertli.sample.mrs.model.generated.types.IPerson;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.lang.NonNull;

@@ -1,12 +1,10 @@
 package com.mikeoertli.sample.mrs.graphql;
 
-import com.mikeoertli.sample.mrs.graphql.generated.types.ContentType;
-import com.mikeoertli.sample.mrs.graphql.generated.types.IPerson;
-import com.mikeoertli.sample.mrs.graphql.generated.types.IPodcastEpisode;
-import com.mikeoertli.sample.mrs.graphql.generated.types.ITopic;
-import com.mikeoertli.sample.mrs.graphql.generated.types.Person;
-import com.mikeoertli.sample.mrs.graphql.generated.types.PodcastEpisode;
-import com.mikeoertli.sample.mrs.graphql.generated.types.Topic;
+import com.mikeoertli.sample.mrs.model.generated.types.ContentType;
+import com.mikeoertli.sample.mrs.model.generated.types.IPodcastEpisode;
+import com.mikeoertli.sample.mrs.model.generated.types.ITopic;
+import com.mikeoertli.sample.mrs.model.generated.types.PodcastEpisode;
+import com.mikeoertli.sample.mrs.model.generated.types.Topic;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,7 +53,6 @@ public class TestUtilities
                 .rssFeedUrl("https://example.com/podcast.rss")
                 .releaseTimestamp("2022-02-22'T'22:22:22.222Z") // yyyy-MM-dd'T'HH:mm:ss.SSSZ
                 .topicList(topics)
-                .host(Mockito.mock(Person.class))
                 .build();
     }
 }

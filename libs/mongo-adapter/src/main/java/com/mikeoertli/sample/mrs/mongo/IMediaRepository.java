@@ -1,6 +1,6 @@
 package com.mikeoertli.sample.mrs.mongo;
 
-import com.mikeoertli.sample.mrs.model.result.MediaResult;
+import com.mikeoertli.sample.mrs.model.generated.types.MediaResult;
 import org.springframework.data.mongodb.repository.MongoRepository;
 
 /**
