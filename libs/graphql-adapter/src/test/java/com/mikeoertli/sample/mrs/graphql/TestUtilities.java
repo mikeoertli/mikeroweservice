@@ -8,9 +8,9 @@ import com.mikeoertli.sample.mrs.model.generated.types.Topic;
 import org.mockito.Mockito;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.Nullable;
 import java.lang.invoke.MethodHandles;
 import java.util.ArrayList;
 import java.util.Arrays;

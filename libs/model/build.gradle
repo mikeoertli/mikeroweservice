@@ -12,9 +12,6 @@ dependencies {
 	// Netflix DGS GraphQL: https://netflix.github.io/dgs/getting-started/
 	api(platform("com.netflix.graphql.dgs:graphql-dgs-platform-dependencies:latest.release"))
 	api "com.netflix.graphql.dgs:graphql-dgs-extended-scalars"
-//	implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
-
-	implementation 'org.springframework.boot:spring-boot-autoconfigure'
 }
 
 // DGS Code generation

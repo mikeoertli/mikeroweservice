@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.core.KafkaAdmin;
 
 import java.lang.invoke.MethodHandles;
@@ -19,6 +21,8 @@ import java.util.Map;
  *
  * @since 0.0.1
  */
+@EnableKafka
+@PropertySource("classpath:kafka-application.properties")
 @Configuration
 public class NotifierKafkaTopicConfig
 {

@@ -19,8 +19,6 @@ import java.io.IOException;
 import java.lang.invoke.MethodHandles;
 import java.net.URL;
 
-import static graphql.schema.idl.TypeRuntimeWiring.newTypeWiring;
-
 /**
  * GraphQL provider bean
  *

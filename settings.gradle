@@ -6,6 +6,7 @@ include ':mongo-adapter'
 //include ':db-adapter'
 include ':kafka-adapter'
 include ':graphql-adapter'
+include ':common'
 include ':notification-service'
 include ':twitter-service'
 include ':imdb-service'
@@ -20,6 +21,7 @@ project(':mongo-adapter').projectDir = "$rootDir/libs/mongo-adapter" as File
 project(':model').projectDir = "$rootDir/libs/model" as File
 project(':kafka-adapter').projectDir = "$rootDir/libs/kafka-adapter" as File
 project(':graphql-adapter').projectDir = "$rootDir/libs/graphql-adapter" as File
+project(':common').projectDir = "$rootDir/libs/common" as File
 project(':notification-service').projectDir = "$rootDir/services/notification-service" as File
 project(':twitter-service').projectDir = "$rootDir/services/twitter-service" as File
 project(':imdb-service').projectDir = "$rootDir/services/imdb-service" as File

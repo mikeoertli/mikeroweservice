@@ -73,7 +73,7 @@ subprojects {
     // https://codingnconcepts.com/spring-boot/deployment-of-microservices-using-docker-and-jenkins/
     tasks.named('bootBuildImage')  {
         // These are the modules for which we do not want to build an image
-        def noDockerModules = [ 'kafka-adapter', 'db-adapter' , 'mongo-adapter', 'model' ]
+        def noDockerModules = [ 'kafka-adapter', 'db-adapter' , 'mongo-adapter', 'model', 'common' ]
         if (noDockerModules.contains(project.name)) {
             enabled = false
         } else
@@ -82,6 +82,12 @@ subprojects {
             imageName = 'mikeoertli/mike-rowe-service-' + project.name
             tags=[imageName + ':' + project.version, imageName + ':latest']
         }
+    }
+
+    tasks.named('bootJar')  {
+        // These are the modules for which we do not want to build a boot jar
+        def noBootJarModules = [ 'kafka-adapter', 'db-adapter' , 'mongo-adapter', 'model', 'common' ]
+        enabled = noBootJarModules.contains(project.name)
     }
 
     springBoot {
