@@ -1,6 +1,7 @@
 package com.mikeoertli.sample.mrs.sentiment.kafka;
 
 import org.apache.kafka.common.serialization.Serdes;
+import org.apache.kafka.streams.StreamsConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,11 +16,6 @@ import java.lang.invoke.MethodHandles;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.apache.kafka.streams.StreamsConfig.APPLICATION_ID_CONFIG;
-import static org.apache.kafka.streams.StreamsConfig.BOOTSTRAP_SERVERS_CONFIG;
-import static org.apache.kafka.streams.StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG;
-import static org.apache.kafka.streams.StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG;
-
 /**
  * Basic Kafka stream configuration class that builds a config for stream that has key/value of String types
  *
@@ -32,8 +28,8 @@ public class KafkaConfig
 {
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    @Value(value = "${kafka.client.id}")
-    private String clientId;
+    @Value(value = "${kafka.application.id}")
+    private String applicationId;
 
     @Value("${kafka.bootstrap.servers}")
     private String bootstrapServers;
@@ -42,10 +38,10 @@ public class KafkaConfig
     KafkaStreamsConfiguration getKafkaStreamsConfig()
     {
         Map<String, Object> props = new HashMap<>();
-        props.put(APPLICATION_ID_CONFIG, clientId);
-        props.put(BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
-        props.put(DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
-        props.put(DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+        props.put(StreamsConfig.APPLICATION_ID_CONFIG, applicationId);
+        props.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, bootstrapServers);
+        props.put(StreamsConfig.DEFAULT_KEY_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
+        props.put(StreamsConfig.DEFAULT_VALUE_SERDE_CLASS_CONFIG, Serdes.String().getClass().getName());
 
         return new KafkaStreamsConfiguration(props);
     }

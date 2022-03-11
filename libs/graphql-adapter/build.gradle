@@ -1,6 +1,6 @@
 dependencies {
     api project(":kafka-adapter") // includes the data model
-    api project(":transcript-service") // includes the data model -- fixme, use via service API
+//    api project(":transcript-service") // includes the data model -- fixme, use via service API
 
 	// Note that versions are managed by the platform dependency plugin here (similar to how spring does it)
     // This is handled in the 'model' module

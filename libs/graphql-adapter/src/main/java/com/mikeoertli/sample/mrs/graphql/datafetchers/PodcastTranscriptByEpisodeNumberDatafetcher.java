@@ -1,11 +1,12 @@
 package com.mikeoertli.sample.mrs.graphql.datafetchers;
 
+import com.mikeoertli.sample.mrs.graphql.kafka.KafkaQueryService;
 import com.mikeoertli.sample.mrs.model.generated.types.ContentType;
+import com.mikeoertli.sample.mrs.model.generated.types.ITranscript;
 import com.mikeoertli.sample.mrs.model.generated.types.Transcript;
 import com.mikeoertli.sample.mrs.graphql.kafka.ParticipantQueryService;
 import com.mikeoertli.sample.mrs.graphql.utils.ConverterUtil;
-import com.mikeoertli.sample.mrs.transcript.api.TranscriptWrapper;
-import com.mikeoertli.sample.mrs.transcript.service.TranscriptService;
+import com.mikeoertli.sample.mrs.model.generated.types.TranscriptResult;
 import com.netflix.graphql.dgs.DgsComponent;
 import com.netflix.graphql.dgs.DgsData;
 import com.netflix.graphql.dgs.DgsQuery;
@@ -44,23 +45,22 @@ public class PodcastTranscriptByEpisodeNumberDatafetcher
 {
     private static final Logger logger = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
 
-    private final TranscriptService transcriptService;
+//    private final TranscriptService transcriptService;
+    private final KafkaQueryService kafkaQueryService;
     private final ParticipantQueryService participantQueryService;
 
     @Autowired
-    public PodcastTranscriptByEpisodeNumberDatafetcher(TranscriptService transcriptService, ParticipantQueryService participantQueryService)
+    public PodcastTranscriptByEpisodeNumberDatafetcher(KafkaQueryService kafkaQueryService, ParticipantQueryService participantQueryService)
     {
-        this.transcriptService = transcriptService;
+        this.kafkaQueryService = kafkaQueryService;
         this.participantQueryService = participantQueryService;
     }
 
     @DgsQuery
-    public Transcript podcastTranscriptByEpisodeNumber(@InputArgument Integer episodeNumber)
+    public ITranscript podcastTranscriptByEpisodeNumber(@InputArgument Integer episodeNumber)
     {
-        Optional<TranscriptWrapper> transcriptWrapper = transcriptService.getTranscriptForPodcast(episodeNumber);
+        Optional<ITranscript> transcript = kafkaQueryService.getTranscriptForPodcastEpisode(episodeNumber);
 
-        return transcriptWrapper
-                .map(wrapper -> ConverterUtil.convertTranscriptWrapper(wrapper, ContentType.PODCAST, participantQueryService))
-                .orElse(null);
+        return transcript.orElse(null);
     }
 }

@@ -11,7 +11,8 @@ include ':notification-service'
 include ':twitter-service'
 include ':imdb-service'
 include ':podcast-service'
-include ':transcript-service'
+include ':transcript-retriever'
+include ':transcript-analyzer'
 include ':sentiment-processor'
 
 // Only needed if module name != directory name
@@ -26,5 +27,6 @@ project(':notification-service').projectDir = "$rootDir/services/notification-se
 project(':twitter-service').projectDir = "$rootDir/services/twitter-service" as File
 project(':imdb-service').projectDir = "$rootDir/services/imdb-service" as File
 project(':podcast-service').projectDir = "$rootDir/services/podcast-service" as File
-project(':transcript-service').projectDir = "$rootDir/services/transcript-service" as File
+project(':transcript-retriever').projectDir = "$rootDir/stream-processors/transcript-retriever" as File
+project(':transcript-analyzer').projectDir = "$rootDir/stream-processors/transcript-analyzer" as File
 project(':sentiment-processor').projectDir = "$rootDir/stream-processors/sentiment-processor" as File

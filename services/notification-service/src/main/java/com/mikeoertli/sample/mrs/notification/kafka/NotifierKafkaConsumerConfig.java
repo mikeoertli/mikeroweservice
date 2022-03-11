@@ -35,7 +35,7 @@ public class NotifierKafkaConsumerConfig
     @Value(value = "${kafka.client.id.notification}")
     private String clientId;
 
-    @Value(value = "${kafka.group.id}")
+    @Value(value = "${kafka.consumer.group.id.notification}")
     private String groupId;
 
     @Value("${kafka.bootstrap.servers}")

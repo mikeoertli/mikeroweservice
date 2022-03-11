@@ -1,6 +1,10 @@
 package com.mikeoertli.sample.mrs.graphql.kafka;
 
+import com.mikeoertli.sample.mrs.model.generated.types.EpisodicMedia;
 import com.mikeoertli.sample.mrs.model.generated.types.IPodcastEpisode;
+import com.mikeoertli.sample.mrs.model.generated.types.ITranscript;
+import com.mikeoertli.sample.mrs.model.generated.types.TranscriptResult;
+import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +29,7 @@ public class KafkaQueryService
 
     // FIXME TEMP HACK
     public final List<IPodcastEpisode> podcasts = new ArrayList<>();
+    public final List<ITranscript> transcripts = new ArrayList<>();
 
 //    @Autowired
 //    public KafkaQueryService(ParticipantQueryService participantQueryService)
@@ -41,5 +46,18 @@ public class KafkaQueryService
         {
             return Optional.empty();
         }
+    }
+
+    public Optional<ITranscript> getTranscriptForPodcastEpisode(int episodeNumber)
+    {
+        Optional<IPodcastEpisode> podcastByEpisode = getPodcastByEpisode(episodeNumber);
+        return podcastByEpisode.map(EpisodicMedia::getTranscriptId)
+                .flatMap(this::getTranscript);
+    }
+
+    @NotNull
+    private Optional<ITranscript> getTranscript(String transcriptId)
+    {
+        return transcripts.stream().filter(t -> t.getId().equals(transcriptId)).findFirst();
     }
 }
